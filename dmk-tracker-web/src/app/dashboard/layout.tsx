@@ -6,12 +6,16 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token");
+  const token = (await cookies()).get("token")?.value;
 
   if (!token) {
     redirect("/auth/login");
   }
 
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen flex bg-gray-50">
+      {/* Sidebar later */}
+      <main className="flex-1 p-6">{children}</main>
+    </div>
+  );
 }
