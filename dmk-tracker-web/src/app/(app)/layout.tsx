@@ -2,6 +2,7 @@ import Link from "next/link";
 import { serverFetch } from "@/lib/serverFetch";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 
 export default async function AppLayout({
   children,
@@ -18,7 +19,7 @@ export default async function AppLayout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Top nav */}
+      
       <header className="border-b bg-white">
         <nav className="max-w-7xl mx-auto flex gap-6 px-6 py-4">
           <Link href="/dashboard" className="font-medium">
@@ -31,9 +32,12 @@ export default async function AppLayout({
             </Link>
           )}
 
-          <span className="ml-auto text-sm text-gray-500">
-             Role: {user.isAdmin === 1 ? "ADMIN" : "USER"}
-          </span>
+          <div className="ml-auto">
+            <span className="mr-4 text-sm text-gray-500">
+              {user.email} ({user.isAdmin === 1 ? "ADMIN" : "USER"})
+            </span>
+            <LogoutButton />
+          </div>
         </nav>
       </header>
 
@@ -43,3 +47,4 @@ export default async function AppLayout({
     </div>
   );
 }
+

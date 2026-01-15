@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 type FetchOptions = RequestInit & {
   auth?: boolean;
@@ -28,8 +29,15 @@ export async function serverFetch<T>(
     }
   );
 
+  // Handle token expiry
+  if (res.status === 401) {
+    // JWT expired or invalid
+    redirect("/auth/login"); // Redirect to login page
+  }
+
   if (!res.ok) {
-    throw new Error("API request failed");
+    const text = await res.text();
+    throw new Error(`API request failed: ${res.status} ${text}`);
   }
 
   return res.json();
