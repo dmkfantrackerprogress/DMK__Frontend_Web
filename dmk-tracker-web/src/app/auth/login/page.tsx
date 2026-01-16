@@ -25,13 +25,17 @@ export default function LoginPage() {
         }
       );
 
-      if (!res.ok) throw new Error("Login failed");
-
       const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message);
+        return;
+      }
+
       setSuccess(data.message);
       router.replace("/dashboard");
     } catch (err) {
-      setError("Invalid email or password");
+      setError("Something went wrong. Please try again.");
     }
   }
 

@@ -12,21 +12,26 @@ export async function POST(req: Request) {
     }
   );
 
+  const data = await res.json();
+
+  // ❌ login failed
   if (!res.ok) {
     return NextResponse.json(
-      { error: "Login failed" },
-      { status: 401 }
+      { message: data.error },
+      { status: res.status }
     );
   }
 
-  const data = await res.json();
-
-  const response = NextResponse.json({ success: true });
+  // ✅ login success
+  const response = NextResponse.json({
+    message: data.message,
+  });
 
   response.cookies.set("token", data.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    sameSite: "lax",
   });
 
   return response;
