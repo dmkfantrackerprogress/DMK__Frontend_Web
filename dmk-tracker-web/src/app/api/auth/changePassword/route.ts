@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/change-password`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -14,7 +14,6 @@ export async function POST(req: Request) {
 
   const data = await res.json();
 
-  // ❌ login failed
   if (!res.ok) {
     return NextResponse.json(
       { message: data.error },
@@ -22,15 +21,5 @@ export async function POST(req: Request) {
     );
   }
 
-  // ✅ login success
-  const response = NextResponse.json({ message: data.message });
-
-  response.cookies.set("token", data.token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    sameSite: "lax",
-  });
-
-  return response;
+  return NextResponse.json({ message: data.message });
 }
