@@ -9,11 +9,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
       const res = await fetch(
@@ -36,6 +38,8 @@ export default function LoginPage() {
       router.replace("/dashboard");
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -58,6 +62,7 @@ export default function LoginPage() {
         <input
           type="email"
           placeholder="Email"
+          required
           className="w-full border p-2 rounded"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -66,13 +71,17 @@ export default function LoginPage() {
         <input
           type="password"
           placeholder="Password"
+          required
           className="w-full border p-2 rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-black text-white p-2 rounded">
-          Login
+        <button
+          disabled={loading}
+          className="w-full bg-black text-white p-2 rounded disabled:opacity-50"
+        >
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>

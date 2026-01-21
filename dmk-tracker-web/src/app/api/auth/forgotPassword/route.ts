@@ -1,32 +1,51 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }
-  );
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    return NextResponse.json(
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`,
       {
-        message: data.error,
-        details: data.details ?? null,
-      },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { message: data.error },
+        { status: res.status }
+      );
+    }
+
+    const response = NextResponse.json(
+      { message: data.message },
       { status: res.status }
     );
-  }
+
+    response.cookies.set("otp_token", data.otpToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 5 * 60, // 5 minutes
+    });
+
+    return response;
+
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Internal server error";
 
     return NextResponse.json(
-    {
-        message: data.message,
-        data: data.data,
-    });
+      { message },
+      { status: 500 }
+    );
+  }
 }
+
+

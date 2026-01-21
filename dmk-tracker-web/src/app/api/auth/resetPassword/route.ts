@@ -1,28 +1,58 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const { email, newPassword } = await req.json();
+    const cookieStore = await cookies();
+    const otpToken = cookieStore.get("otp_token")?.value;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+    if (!otpToken) {
+      return NextResponse.json(
+        { message: "OTP session expired" },
+        { status: 401 }
+      );
     }
-  );
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    return NextResponse.json(
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`,
       {
-        message: data.error,
-        details: data.details ?? null,
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ email, newPassword, otpToken }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        {
+          message: data.error,
+        },
+        { status: res.status }
+      );
+    }
+
+    const response = NextResponse.json(
+      {
+        message: data.message,
       },
       { status: res.status }
     );
-  }
 
-  return NextResponse.json({ message: data.message });
+    response.cookies.delete("otp_token");
+
+    return response;
+    
+  } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Internal server error";
+
+      return NextResponse.json(
+        { message: message },
+        { status: 500 }
+      );
+  }
 }
+
