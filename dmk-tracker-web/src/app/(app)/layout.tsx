@@ -2,7 +2,7 @@ import Link from "next/link";
 import { serverFetch } from "@/lib/serverFetch";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { LogoutButton } from "@/components/layout/auth/LogoutButton";
 
 export default async function AppLayout({
   children,
