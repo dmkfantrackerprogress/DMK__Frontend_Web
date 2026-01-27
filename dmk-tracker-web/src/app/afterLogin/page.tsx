@@ -1,4 +1,4 @@
-import { LogoutButton } from "@/components/layout/auth/LogoutButton";
+import { LogoutButton } from "@/components/layout/shared/LogoutButton";
 import { serverFetch } from "@/lib/serverFetch";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user";

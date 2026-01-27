@@ -1,4 +1,4 @@
-/*"use client";
+"use client";
 
 import { useRouter } from "next/navigation";
 
@@ -21,18 +21,6 @@ export function LogoutButton() {
       Logout
     </button>
   );
-}*/
-
-"use client";
-import { useAuth } from "@/context/AuthContext";
-
-export function LogoutButton() {
-  const { logout } = useAuth();
-
-  return (
-    <button onClick={logout} className="text-red-600">
-      Logout
-    </button>
-  );
 }
+
 

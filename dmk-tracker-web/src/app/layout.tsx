@@ -1,7 +1,7 @@
 import "./globals.css";
-import Header from "@/components/layout/auth/Header";
-import Footer from "@/components/layout/auth/Footer";
-import BackToTop from "@/components/layout/auth/BackToTop";
+import Header from "@/components/layout/shared/Header";
+import Footer from "@/components/layout/shared/Footer";
+import BackToTop from "@/components/layout/shared/BackToTop";
 
 export default function RootLayout({
   children,
