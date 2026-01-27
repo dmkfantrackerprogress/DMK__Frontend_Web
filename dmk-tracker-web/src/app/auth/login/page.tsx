@@ -51,7 +51,7 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm space-y-4"
       >
-        <h1 className="text-2xl font-bold">Login</h1>
+        <h1 className="text-2xl font-bold text-black dark:text-black-100">Login</h1>
 
         {error && (
           <p className="text-red-500 text-sm">{error}</p>
@@ -65,7 +65,7 @@ export default function LoginPage() {
           type="email"
           placeholder="Email"
           required
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded text-black dark:text-black-100"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -75,7 +75,7 @@ export default function LoginPage() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             required
-            className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
