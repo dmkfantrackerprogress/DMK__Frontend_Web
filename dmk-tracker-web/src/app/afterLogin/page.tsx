@@ -1,7 +1,8 @@
-import { LogoutButton } from "@/components/layout/shared/LogoutButton";
+import { LogoutButton } from "@/components/layout/afterLogin/LogoutButton";
 import { serverFetch } from "@/lib/serverFetch";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user";
+import { ExpiredTokenLogoutAuto }  from "@/components/layout/afterLogin/ExpiredTokenLogoutAuto";
 
 export default async function DashboardPage() {
   const user = await serverFetch<User>("/api/auth/me");

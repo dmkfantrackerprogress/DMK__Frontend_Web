@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ExpiredTokenLogoutAuto }  from "@/components/layout/shared/ExpiredTokenLogoutAuto";
+import Header from "@/components/layout/afterLogin/Header";
 
 export default async function DashboardLayout({
   children,
@@ -14,11 +14,10 @@ export default async function DashboardLayout({
   }
 
   return (
-    <ExpiredTokenLogoutAuto>
-      <div className="min-h-screen flex bg-gray-50">
-        {/* Sidebar later */}
+      <div className="min-h-screen ">     
+        <Header />
         <main className="flex-1 p-6">{children}</main>
       </div>
-    </ExpiredTokenLogoutAuto>
+
   );
 }
