@@ -44,6 +44,7 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "lax",
+      expires: new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
     });
 
     return response;
