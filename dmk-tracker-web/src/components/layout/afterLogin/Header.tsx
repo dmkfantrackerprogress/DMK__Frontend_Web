@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LogoutButton } from "@/components/layout/afterLogin/LogoutButton";
 
 export default function Header() {
   return (
@@ -12,7 +13,7 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-3">
-
+          <LogoutButton />
         </div>
       </div>
     </header>
