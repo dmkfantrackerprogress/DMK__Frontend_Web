@@ -68,6 +68,7 @@ export default function LoginPage() {
           className="w-full border p-2 rounded text-black dark:text-black-100"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
         />
 
         <div className="relative w-full">
@@ -78,11 +79,13 @@ export default function LoginPage() {
             className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
 
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
+            disabled={loading}
             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
           >
             {showPassword ? (
