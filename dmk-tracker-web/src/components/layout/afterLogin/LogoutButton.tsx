@@ -22,7 +22,7 @@ export function LogoutButton() {
              hover:bg-white-50 dark:hover:bg-white-900/20
              transition"
     >
-      <LogOut size={16} />
+      <LogOut size={25} />
     </button>
   );
 }
