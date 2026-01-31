@@ -37,7 +37,7 @@ export default function LoginPage() {
       }
 
       setSuccess(data.message);
-      router.replace("/afterLogin");
+      router.replace("/afterLogin/user/dashboard");
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {
