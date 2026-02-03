@@ -5,6 +5,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
     const token = requireAuth();
 
     const res = await fetch(
@@ -14,6 +17,7 @@ export async function POST(req: Request) {
         headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
         body: JSON.stringify(body),
         credentials: "include",
+        signal: controller.signal,
       }
     );
 

@@ -4,6 +4,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
       {
@@ -11,6 +14,7 @@ export async function POST(req: Request) {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body),
         credentials: "include",
+        signal: controller.signal,
       }
     );
 

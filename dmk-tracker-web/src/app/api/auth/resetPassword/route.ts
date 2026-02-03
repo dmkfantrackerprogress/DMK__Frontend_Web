@@ -14,6 +14,9 @@ export async function POST(req: Request) {
       );
     }
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`,
       {
@@ -21,6 +24,7 @@ export async function POST(req: Request) {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, newPassword, otpToken }),
         credentials: "include",
+        signal: controller.signal,
       }
     );
 

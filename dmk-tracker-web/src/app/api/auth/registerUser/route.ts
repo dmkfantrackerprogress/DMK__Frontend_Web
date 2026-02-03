@@ -4,15 +4,20 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register-user`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-        credentials: "include",
+        signal: controller.signal,
       }
     );
+
+    clearTimeout(timeout);
 
     const data = await res.json();
 
@@ -24,7 +29,9 @@ export async function POST(req: Request) {
     }
 
     const response = NextResponse.json(
-      { message: data.message },
+      { message: data.message,
+        otpToken: data.otpToken,
+      },
       { status: res.status }
     );
 
@@ -39,6 +46,14 @@ export async function POST(req: Request) {
     return response;
 
   } catch (err: unknown) {
+
+    if (err instanceof Error && err.name === "AbortError") {
+      return NextResponse.json(
+        { message: "Backend took too long — please try again." },
+        { status: 504 }
+      );
+    }
+
     const message =
       err instanceof Error ? err.message : "Internal server error";
 
