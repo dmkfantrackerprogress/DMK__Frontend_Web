@@ -69,6 +69,7 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={loading}
+          autoComplete="off"
         />
 
         <div className="relative w-full">
@@ -94,6 +95,16 @@ export default function LoginPage() {
               <EyeIcon className="h-5 w-5" />
             )}
           </button>
+        </div>
+
+        {/* ✅ NEW: Forgot Password Link */}
+        <div className="text-right">
+          <a
+            href="/auth/forgot-password"
+            className="text-sm text-blue-500 hover:underline"
+          >
+            Forgot password?
+          </a>
         </div>
 
         <button

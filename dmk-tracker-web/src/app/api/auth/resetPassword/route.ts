@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const { email, newPassword } = await req.json();
     const cookieStore = await cookies();
-    const otpToken = cookieStore.get("otp_token")?.value;
+    const otpToken = cookieStore.get("forgot_password_otp_token")?.value;
 
     if (!otpToken) {
       return NextResponse.json(
@@ -28,6 +28,8 @@ export async function POST(req: Request) {
       }
     );
 
+    clearTimeout(timeout);
+
     const data = await res.json();
 
     if (!res.ok) {
@@ -46,18 +48,26 @@ export async function POST(req: Request) {
       { status: res.status }
     );
 
-    response.cookies.delete("otp_token");
+    response.cookies.delete("forgot_password_otp_token");
 
     return response;
     
   } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Internal server error";
 
+    if (err instanceof Error && err.name === "AbortError") {
       return NextResponse.json(
-        { message: message },
-        { status: 500 }
+        { message: "Backend took too long — please try again." },
+        { status: 504 }
       );
+    }
+
+    const message =
+      err instanceof Error ? err.message : "Internal server error";
+
+    return NextResponse.json(
+      { message },
+      { status: 500 }
+    );
   }
 }
 

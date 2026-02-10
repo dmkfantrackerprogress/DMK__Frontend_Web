@@ -1,22 +1,19 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import confetti from "canvas-confetti";
 
-export default function RegisterWithOTP() {
+export default function forgotPassword() {
   const router = useRouter();
-  const [step, setStep] = useState<"register" | "otp">("register");
+  const [step, setStep] = useState<"forgot" | "otp">("forgot");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [otpToken, setOtpToken] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [shake, setShake] = useState(false);
-  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
 
   const OTP_LENGTH = 6;
   const [otpArray, setOtpArray] = useState<string[]>(Array(OTP_LENGTH).fill(""));
@@ -49,24 +46,24 @@ export default function RegisterWithOTP() {
     return `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
   };
 
-  // Register
-  const handleRegister = async (e: React.FormEvent) => {
+  // Forgot Password
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      const res = await fetch("/api/auth/registerUser", {
+      const res = await fetch("/api/auth/forgotPassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email }),
       });
       const data = await res.json();
 
       if (!res.ok) {
         setMessage(data.message);
         setSuccess(false); 
-        setRegisterSuccess(false);
+        setResetSuccess(false);
       }
       else {
         setOtpToken(data.otpToken);
@@ -75,8 +72,7 @@ export default function RegisterWithOTP() {
         setResendTimer(MAX_TIMER);
         setOtpArray(Array(OTP_LENGTH).fill(""));
         setEmail(email);
-        setPassword(password);
-        setRegisterSuccess(true);
+        setResetSuccess(true);
         setSuccess(false); 
       }
     } catch (err) {
@@ -86,8 +82,8 @@ export default function RegisterWithOTP() {
     }
   };
 
-  // Verify OTP
-  const handleVerifyOTP = async () => {
+  // Reset Password with OTP
+  const handleResetPassword = async () => {
     const otpString = otpArray.join("");
     if (!otpToken || otpString.length !== OTP_LENGTH) return;
 
@@ -95,10 +91,10 @@ export default function RegisterWithOTP() {
     setMessage("");
 
     try {
-      const res = await fetch("/api/auth/verifyOTP", {
+      const res = await fetch("/api/auth/resetPassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otpToken, otp: otpString, email, password }),
+        body: JSON.stringify({ otpToken, newPassword: otpString, email }),
       });
       const data = await res.json();
 
@@ -123,22 +119,22 @@ export default function RegisterWithOTP() {
 
   // Resend OTP
   const handleResendOTP = async () => {
-    if (!email || !password || resendTimer > 0) return;
+    if (!email  || resendTimer > 0) return;
     setLoading(true);
     setMessage("");
 
     try {
-      const res = await fetch("/api/auth/registerUser", {
+      const res = await fetch("/api/auth/forgotPassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email }),
       });
       const data = await res.json();
 
       if (!res.ok) {
         setMessage(data.message); 
         setSuccess(false);
-        setRegisterSuccess(false);
+        setResetSuccess(false);
       }
       else {
         setOtpToken(data.otpToken);
@@ -148,7 +144,7 @@ export default function RegisterWithOTP() {
         if (otpRefs.current[0]) otpRefs.current[0].focus();
         setActiveIndex(0);
         setSuccess(false);
-        setRegisterSuccess(true);
+        setResetSuccess(true);
       }
     } catch {
       setMessage("Something went wrong");
@@ -169,7 +165,7 @@ export default function RegisterWithOTP() {
     setActiveIndex(index < OTP_LENGTH - 1 ? index + 1 : index);
 
     if (index < OTP_LENGTH - 1) otpRefs.current[index + 1].focus();
-    if (index === OTP_LENGTH - 1 && newOtpArray.every((digit) => digit !== "")) handleVerifyOTP();
+    if (index === OTP_LENGTH - 1 && newOtpArray.every((digit) => digit !== "")) handleResetPassword();
   };
 
   // OTP backspace
@@ -192,9 +188,9 @@ export default function RegisterWithOTP() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-6 rounded shadow">
-        {step === "register" ? (
-          <form onSubmit={handleRegister} className="flex flex-col gap-4">
-            <h1 className="text-2xl font-bold text-black dark:text-black-100">Register</h1>
+        {step === "forgot" ? (
+          <form onSubmit={handleForgotPassword} className="flex flex-col gap-4">
+            <h1 className="text-2xl font-bold text-black dark:text-black-100">Forgot Password</h1>
             {message && <p className="text-sm text-red-500">{message}</p>}
 
             <input
@@ -208,36 +204,16 @@ export default function RegisterWithOTP() {
               autoComplete="off"
             />
 
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
-                disabled={loading}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                disabled={loading}
-              >
-                {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-              </button>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-black text-white p-2 rounded disabled:opacity-50"
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Sending OTP..." : "Send OTP"}
             </button>
 
             <p className="text-center text-sm text-gray-600">
-              Already have an account?{" "}
+              Remember Password?{" "}
               <a
                 href="/auth/login"
                 className="text-blue-500 font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
@@ -248,11 +224,11 @@ export default function RegisterWithOTP() {
           </form>
         ) : (
           <div className="flex flex-col gap-4 relative">
-            <h1 className="text-2xl font-bold text-center text-black dark:text-black-100">Verify OTP</h1>
+            <h1 className="text-2xl font-bold text-center text-black dark:text-black-100">Reset Password</h1>
 
             {message && (() => {
               let colorClass = "text-red-500";
-              if (registerSuccess) colorClass = "text-green-500";
+              if (resetSuccess) colorClass = "text-green-500";
               else if (success) colorClass = "text-green-500";
 
               return <p className={`text-sm ${colorClass}`}>{message}</p>;
@@ -293,11 +269,11 @@ export default function RegisterWithOTP() {
 
             {/* Verify OTP */}
             <button
-              onClick={handleVerifyOTP}
-              disabled={loading}
+              onClick={handleResetPassword}
+              disabled={loading || otpArray.some((digit) => digit === "")}
               className="w-full bg-blue-500 p-2 rounded disabled:opacity-50 text-black dark:text-black-100"
             >
-              {loading ? "Verifying..." : "Verify OTP"}
+              {loading ? "Resetting Password..." : "Reset Password"}
             </button>
 
             {/* Resend OTP (visually linked to timer) */}

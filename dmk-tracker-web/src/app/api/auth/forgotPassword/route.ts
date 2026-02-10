@@ -17,6 +17,8 @@ export async function POST(req: Request) {
       }
     );
 
+    clearTimeout(timeout);
+
     const data = await res.json();
 
     if (!res.ok) {
@@ -27,11 +29,14 @@ export async function POST(req: Request) {
     }
 
     const response = NextResponse.json(
-      { message: data.message },
+      { 
+        message: data.message, 
+        otpToken: data.otpToken,
+      },
       { status: res.status }
     );
 
-    response.cookies.set("otp_token", data.otpToken, {
+    response.cookies.set("forgot_password_otp_token", data.otpToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -42,6 +47,14 @@ export async function POST(req: Request) {
     return response;
 
   } catch (err: unknown) {
+
+    if (err instanceof Error && err.name === "AbortError") {
+      return NextResponse.json(
+        { message: "Backend took too long — please try again." },
+        { status: 504 }
+      );
+    }
+
     const message =
       err instanceof Error ? err.message : "Internal server error";
 
