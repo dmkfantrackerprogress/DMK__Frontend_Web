@@ -12,6 +12,7 @@ export default function ChangePasswordPage() {
   const [showNew, setShowNew] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
 
   // ---- Password strength checker ----
   const getStrength = (pwd: string) => {
@@ -39,12 +40,16 @@ export default function ChangePasswordPage() {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.message);
-
-      setMessage("Password updated successfully ✅");
-      setOldPassword("");
-      setNewPassword("");
-      router.replace("/afterLogin/user/dashboard");
+      if (!res.ok) {
+        setMessage(data.message);
+        setSuccess(false); 
+      } else {
+        setMessage(data.message);
+        setSuccess(true);
+        setOldPassword("");
+        setNewPassword("");
+        router.replace("/afterLogin/user/dashboard");
+      }
     } catch (err: any) {
       setMessage(err.message);
     } finally {
@@ -59,7 +64,12 @@ export default function ChangePasswordPage() {
           Change Password
         </h1>
 
-        {message && <p className="text-red-500 text-sm">{message}</p>}
+       {message && (() => {
+          let colorClass = "text-red-500";
+          if (success) colorClass = "text-green-500";
+
+          return <p className={`text-sm ${colorClass}`}>{message}</p>;
+        })()}
 
         {/* OLD PASSWORD */}
         <div className="relative w-full">
