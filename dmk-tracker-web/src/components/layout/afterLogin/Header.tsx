@@ -64,7 +64,7 @@ export default function Header({ user }: { user: User }) {
 
             {open && (
               <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border rounded shadow-md">
-                <Link href="/afterLogin/user/changePassword" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap text-sm">
+                <Link href="/afterLogin/user/changePassword" onClick={() => setOpen(false)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap text-sm">
                   Change Password
                 </Link>
               </div>
