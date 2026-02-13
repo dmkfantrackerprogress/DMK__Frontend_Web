@@ -46,9 +46,15 @@ export default function ChangePasswordPage() {
       } else {
         setMessage(data.message);
         setSuccess(true);
+
+        await fetch("/api/auth/logout", {
+          method: "POST",
+          credentials: "include",
+        });
+
         setOldPassword("");
         setNewPassword("");
-        router.replace("/afterLogin/user/dashboard");
+        window.location.replace("/auth/login");
       }
     } catch (err: any) {
       setMessage(err.message);
