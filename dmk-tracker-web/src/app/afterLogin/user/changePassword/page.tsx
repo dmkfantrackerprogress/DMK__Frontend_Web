@@ -15,15 +15,18 @@ export default function ChangePasswordPage() {
   const [success, setSuccess] = useState(false);
 
   // ---- Password strength checker ----
-  const getStrength = (pwd: string) => {
-    if (pwd.length < 6) return "Weak ❌";
-    if (!/[A-Z]/.test(pwd)) return "Fair ⚠️";
-    if (!/[0-9]/.test(pwd)) return "Good 👍";
-    if (!/[!@#$%^&*]/.test(pwd)) return "Strong 🔥";
-    return "Very Strong 🚀";
+  const getStrengthScore = (pwd: string) => {
+  let score = 0;
+
+  if (pwd.length >= 6) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[!@#$%^&*]/.test(pwd)) score++;
+
+    return score; // 0 - 4
   };
 
-  const strength = newPassword ? getStrength(newPassword) : "";
+  const strengthScore = newPassword ? getStrengthScore(newPassword) : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,9 +132,30 @@ export default function ChangePasswordPage() {
 
         {/* PASSWORD STRENGTH */}
         {newPassword && (
-          <p className="text-sm text-gray-700">
-            Strength: <span className="font-semibold">{strength}</span>
-          </p>
+          <div className="space-y-2">
+            <div className="w-full h-2 bg-gray-200 rounded">
+              <div
+                className={`h-2 rounded transition-all duration-300 ${
+                  strengthScore === 1
+                    ? "bg-red-500 w-1/4"
+                    : strengthScore === 2
+                    ? "bg-yellow-500 w-2/4"
+                    : strengthScore === 3
+                    ? "bg-blue-500 w-3/4"
+                    : strengthScore === 4
+                    ? "bg-green-500 w-full"
+                    : "w-0"
+                }`}
+              />
+            </div>
+
+            <p className="text-sm text-gray-700">
+              {strengthScore === 1 && "Weak"}
+              {strengthScore === 2 && "Fair"}
+              {strengthScore === 3 && "Strong"}
+              {strengthScore === 4 && "Very Strong"}
+            </p>
+          </div>
         )}
 
         <button
