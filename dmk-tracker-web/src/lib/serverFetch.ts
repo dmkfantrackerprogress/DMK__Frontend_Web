@@ -32,7 +32,7 @@ export async function serverFetch<T>(
   // Handle token expiry
   if (res.status === 401) {
     // JWT expired or invalid
-    redirect("/auth/login"); // Redirect to login page
+    redirect("/auth/login?expired=true"); // Redirect to login page
   }
 
   if (!res.ok) {

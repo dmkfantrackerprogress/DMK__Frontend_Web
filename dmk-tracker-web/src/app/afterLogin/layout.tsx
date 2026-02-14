@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Header from "@/components/layout/afterLogin/Header";
-import { ExpiredTokenLogoutAuto } from "@/components/layout/afterLogin/ExpiredTokenLogoutAuto";
 import { serverFetch } from "@/lib/serverFetch";
 import { User } from "@/types/user";
 import { Sidebar, SidebarProvider } from "@/components/layout/afterLogin/Sidebar";
@@ -11,11 +10,9 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const token = (await cookies()).get("token")?.value;
   const user = await serverFetch<User>("/api/auth/me");
-  
+
   return (
-    <ExpiredTokenLogoutAuto hasToken={!!token}>
       <SidebarProvider>
         <div className="min-h-screen flex flex-col">
         {/* Header */}
@@ -30,10 +27,8 @@ export default async function DashboardLayout({
           </main>
         </div>
 
-      
       </div>
       </SidebarProvider>
-    </ExpiredTokenLogoutAuto>
   );
 
 }
