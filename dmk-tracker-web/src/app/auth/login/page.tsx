@@ -6,25 +6,12 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  // ✅ Detect expired token
-  useEffect(() => {
-    const expired = searchParams.get("expired");
-
-    if (expired === "true") {
-      setError("Session expired. Please login again.");
-
-      // 🔥 Remove query param from URL (clean UX)
-      router.replace("/auth/login");
-    }
-  }, [searchParams, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
