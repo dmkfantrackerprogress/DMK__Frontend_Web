@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+    const timeout = setTimeout(() => controller.abort(), 120000); // 120 seconds
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`,

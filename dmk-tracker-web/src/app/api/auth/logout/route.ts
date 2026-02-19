@@ -6,7 +6,7 @@ export async function POST() {
   try {
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+    const timeout = setTimeout(() => controller.abort(), 120000); // 120 seconds
 
     const token = await requireAuth();
 
