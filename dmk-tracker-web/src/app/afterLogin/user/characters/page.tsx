@@ -270,6 +270,32 @@ const handleOpenCreateModal = async () => {
     setViewModalOpen(false);
   };
 
+  const handleResetFilter = async () => {
+    // Reset filter state
+    setFilters({
+      collectionId: "",
+      characterId: "",
+      level: "",
+      fromDate: "",
+      toDate: "",
+    });
+
+    // Reload table without filters
+    setLoading(true);
+
+    const params: any = {
+      page: 1,
+      limit: 10,
+    };
+
+    const query = new URLSearchParams(params);
+    const res = await fetch(`/api/user/characters/getCharacterList?${query.toString()}`);
+    const data = await res.json();
+
+    setRows(data.characters || []);
+    setLoading(false);
+  };
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
@@ -430,6 +456,20 @@ const handleOpenCreateModal = async () => {
         >
           {loading ? "Loading..." : "Filter"}
         </button>
+
+          {/* Reset Button */}
+          {(filters.collectionId ||
+            filters.characterId ||
+            filters.level ||
+            filters.fromDate ||
+            filters.toDate) && (
+            <button
+              onClick={handleResetFilter}
+              className="bg-gray-500 text-white rounded p-2 hover:bg-gray-600 transition"
+            >
+              Reset
+            </button>
+          )}
       </div>
 
       {/* ================= CREATE CHARACTER MODAL ================= */}
