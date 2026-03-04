@@ -452,7 +452,7 @@ const handleOpenCreateModal = async () => {
         {/* Filter Button */}
         <button
           onClick={handleFilter}
-          className="bg-blue-600 text-white rounded p-2"
+          className="bg-blue-600 text-black dark:text-black-100 rounded p-2"
         >
           {loading ? "Loading..." : "Filter"}
         </button>
@@ -465,7 +465,7 @@ const handleOpenCreateModal = async () => {
             filters.toDate) && (
             <button
               onClick={handleResetFilter}
-              className="bg-gray-500 text-white rounded p-2 hover:bg-gray-600 transition"
+              className="bg-gray-500 rounded p-2 hover:bg-gray-600 transition text-black dark:text-black-100"
             >
               Reset
             </button>
@@ -783,12 +783,12 @@ const handleOpenCreateModal = async () => {
             <div className="mt-4 flex justify-end gap-2">
               {!isEditMode && !confirmDelete && (
                 <>
-                  <button onClick={() => setIsEditMode(true)} className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
-                  <button onClick={() => setConfirmDelete(true)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Delete</button>
+                  <button onClick={() => setIsEditMode(true)} className="bg-yellow-500 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
+                  {/*<button onClick={() => setConfirmDelete(true)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Delete</button>*/}
                 </>
               )}
 
-              {isEditMode && <button onClick={handleSaveLevel} className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Save</button>}
+              {isEditMode && <button onClick={handleSaveLevel} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700">Save</button>}
 
               {confirmDelete && (
                 <>
