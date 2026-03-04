@@ -659,7 +659,7 @@ const handleOpenCreateModal = async () => {
 
               <button
                 onClick={handleCreate}
-                className="bg-green-600 text-white w-full p-2 rounded hover:bg-green-700"
+                className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
               >
                 Create
               </button>
