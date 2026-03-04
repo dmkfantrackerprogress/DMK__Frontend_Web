@@ -115,6 +115,10 @@ export default function UserCharacterPage() {
     await fetchDropdown("characters_registered", {
       collectionId: Number(value),
     });
+
+    await fetchDropdown("character_levels_registered", {
+      characterId: Number(value),
+    });
   };
 
   // ===============================
