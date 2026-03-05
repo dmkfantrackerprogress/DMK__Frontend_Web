@@ -1,4 +1,4 @@
-import { serverFetch } from "@/lib/serverFetch";
+/*import { serverFetch } from "@/lib/serverFetch";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user";
 
@@ -16,4 +16,4 @@ export default async function DashboardPage() {
       )}
     </div>
   );
-}
+}*/

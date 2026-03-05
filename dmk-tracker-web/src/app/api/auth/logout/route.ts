@@ -33,7 +33,10 @@ export async function POST() {
       );
     }
 
-    const response = NextResponse.json({ success: true });
+    const response = NextResponse.json(
+      { message: data.message },
+      { status: res.status }
+    );
 
     response.cookies.set("token", "", {
       httpOnly: true,
@@ -42,12 +45,7 @@ export async function POST() {
       maxAge: 0, // immediately expire
     });
 
-    return NextResponse.json(
-      {
-        message: data.message,
-      },
-      { status: res.status }
-    );
+    return response;
     
   } catch (err: unknown) {
 

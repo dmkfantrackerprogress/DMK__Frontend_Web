@@ -10,7 +10,7 @@ export function LogoutButton() {
     await fetch("/api/auth/logout", {
       method: "POST",
     });
-
+    window.location.reload();
     router.replace("/auth/login");
   }
 
