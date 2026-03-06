@@ -1,4 +1,4 @@
-import { FaYoutube, FaGithub, FaDiscord } from "react-icons/fa";
+import { FaYoutube, FaPaypal ,FaGithub, FaDiscord } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -24,6 +24,16 @@ export default function Footer() {
             className="text-gray-500 hover:text-red-500 transition text-lg"
           >
             <FaYoutube />
+          </a>
+
+          {/* PayPal */}
+          <a
+            href="https://www.paypal.com/paypalme/YoonFai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-500 hover:text-blue-600 transition text-lg"
+          >
+            <FaPaypal />
           </a>
 
           {/*<a

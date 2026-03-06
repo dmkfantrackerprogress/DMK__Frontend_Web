@@ -6,6 +6,7 @@ import { useSidebar } from "@/components/layout/afterLogin/Sidebar";
 import { User } from "@/types/user";
 import { Menu, Settings } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { FaPaypal } from "react-icons/fa";
 
 export default function Header({ user }: { user: User }) {
 
@@ -51,6 +52,18 @@ export default function Header({ user }: { user: User }) {
 
         {/* Right side: Settings + Logout */}
         <div className="flex items-center gap-4">
+
+          {/* PayPal Button */}
+          <Link href="/shared/paypal" legacyBehavior>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              <FaPaypal size={22} />
+              <span className="hidden md:inline">Support</span>
+            </a>
+          </Link>
 
           {/* SETTINGS DROPDOWN */}
           <div className="relative" ref={ref}>

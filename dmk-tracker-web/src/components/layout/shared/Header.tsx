@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { FaPaypal } from "react-icons/fa";
 
 export default function Header() {
   return (
@@ -10,7 +11,19 @@ export default function Header() {
           DMK <span className="text-indigo-600">Tracker</span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+
+          {/* PayPal Button */}
+          <Link href="/shared/paypal" legacyBehavior>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              <FaPaypal size={22} />
+              <span className="hidden md:inline">Support</span>
+            </a>
+          </Link>
 
         </div>
       </div>
