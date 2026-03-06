@@ -45,6 +45,12 @@ export default function UserAttractionPage() {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [createData, setCreateData] = useState({
     collectionId: "",
     attractionId: "",
@@ -138,34 +144,40 @@ export default function UserAttractionPage() {
   // ===============================
   // FETCH TABLE DATA
   // ===============================
-  const handleFilter = async () => {
+  const handleFilter = async (pageNumber = page, customFilters = filters) => {
     setLoading(true);
 
     const params: any = {
-      page: 1,
-      limit: 10,
+      page: pageNumber,
+      limit: limit,
     };
 
-    if (filters.collectionId)
-    params.collectionId = filters.collectionId;
+    if (customFilters.collectionId)
+      params.collectionId = customFilters.collectionId;
 
-    if (filters.attractionId)
-      params.attractionId = filters.attractionId;
+    if (customFilters.attractionId)
+      params.attractionId = customFilters.attractionId;
 
-    if (filters.level !== "")
-      params.level = filters.level;
+    if (customFilters.level !== "")
+      params.level = customFilters.level;
 
-    if (filters.fromDate)
-      params.fromDate = filters.fromDate;
+    if (customFilters.fromDate)
+      params.fromDate = customFilters.fromDate;
 
-    if (filters.toDate)
-      params.toDate = filters.toDate;
+    if (customFilters.toDate)
+      params.toDate = customFilters.toDate;
 
     const query = new URLSearchParams(params);
     const res = await fetch(`/api/user/attractions/getAttractionList?${query.toString()}`);
     const data = await res.json();
 
     setRows(data.attractions || []);
+
+    // pagination
+    setPage(data.meta?.page || 1);
+    setTotalPages(data.meta?.totalPages || 1);
+    setTotal(data.meta?.total || 0);
+
     setLoading(false);
   };
 
@@ -276,28 +288,17 @@ const handleOpenCreateModal = async () => {
 
   const handleResetFilter = async () => {
     // Reset filter state
-    setFilters({
+    const emptyFilters = {
       collectionId: "",
       attractionId: "",
       level: "",
       fromDate: "",
       toDate: "",
-    });
-
-    // Reload table without filters
-    setLoading(true);
-
-    const params: any = {
-      page: 1,
-      limit: 10,
     };
 
-    const query = new URLSearchParams(params);
-    const res = await fetch(`/api/user/attractions/getAttractionList?${query.toString()}`);
-    const data = await res.json();
+    setFilters(emptyFilters);
 
-    setRows(data.attractions || []);
-    setLoading(false);
+    await handleFilter(1, emptyFilters);
   };
 
   return (
@@ -457,7 +458,7 @@ const handleOpenCreateModal = async () => {
 
         {/* Filter Button */}
         <button
-          onClick={handleFilter}
+          onClick={() => handleFilter(1)}
           className="bg-blue-600 text-black dark:text-black-100 rounded p-2"
         >
           {loading ? "Loading..." : "Filter"}
@@ -666,6 +667,7 @@ const handleOpenCreateModal = async () => {
               <button
                 onClick={handleCreate}
                 className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
+                disabled={loading}
               >
                 Create
               </button>
@@ -738,6 +740,39 @@ const handleOpenCreateModal = async () => {
             )}
           </tbody>
         </table>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center mt-4">
+
+          <div className="text-sm text-gray-600">
+            Total: {total}
+          </div>
+
+          <div className="flex gap-2">
+
+            <button
+              disabled={page === 1}
+              onClick={() => handleFilter(page - 1)}
+              className="px-3 py-1 border rounded disabled:opacity-40"
+            >
+              Prev
+            </button>
+
+            <span className="px-3 py-1">
+              Page {page} / {totalPages}
+            </span>
+
+            <button
+              disabled={page === totalPages}
+              onClick={() => handleFilter(page + 1)}
+              className="px-3 py-1 border rounded disabled:opacity-40"
+            >
+              Next
+            </button>
+
+          </div>
+        </div>
+
       </div>
 
             {/* ================= VIEW / EDIT MODAL ================= */}
@@ -794,7 +829,7 @@ const handleOpenCreateModal = async () => {
                 </>
               )}
 
-              {isEditMode && <button onClick={handleSaveLevel} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700">Save</button>}
+              {isEditMode && <button onClick={handleSaveLevel} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700" disabled={loading}>Save</button>}
 
               {confirmDelete && (
                 <>
