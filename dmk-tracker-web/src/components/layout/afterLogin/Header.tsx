@@ -46,7 +46,7 @@ export default function Header({ user }: { user: User }) {
             e.preventDefault();
             window.location.reload();
           }}
-          className="text-xl font-extrabold tracking-tight"
+          className="text-xl font-extrabold tracking-tight hover:bg-gray-200 dark:hover:bg-gray-800"
         >
           DMK <span className="text-indigo-600">Tracker</span>
         </Link>
