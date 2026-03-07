@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FaPaypal } from "react-icons/fa";
+import { BiCoffeeTogo } from "react-icons/bi";
 
 export default function Header() {
   return (
@@ -14,15 +15,14 @@ export default function Header() {
         <div className="flex items-center gap-4">
 
           {/* PayPal Button */}
-          <Link href="/shared/paypal" legacyBehavior>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
-            >
-              <FaPaypal size={22} />
-              <span className="hidden md:inline">Support</span>
-            </a>
+          <Link
+            href="/shared/paypal"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded-full shadow-md transition"
+          >
+            <BiCoffeeTogo size={18} />
+            <span className="hidden md:inline">Buy me a coffee</span>
           </Link>
 
         </div>
