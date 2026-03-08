@@ -39,7 +39,7 @@ export function Sidebar({ user }: { user: User }) {
       <aside
         className={`
             absolute left-0 top-0 z-40
-            h-screen w-64
+            h-1000 w-64
             bg-indigo-50 border-r
             transform transition-transform duration-300
             overflow-y-auto
