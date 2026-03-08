@@ -13,7 +13,7 @@ export async function requireAdmin() {
 
   // Not logged in
   if (!token) {
-    redirect("/auth/login");
+    throw new Error("Unauthorized");
   }
 
   const res = await fetch(
@@ -28,15 +28,15 @@ export async function requireAdmin() {
 
   // Invalid / expired token
   if (!res.ok) {
-    redirect("/auth/login");
+    throw new Error("Unauthorized");
   }
 
   const user: MeResponse = await res.json();
 
   // Not admin
   if (user.isAdmin !== 1) {
-    redirect("/dashboard"); // or /403
+    throw new Error("Unauthorized");
   }
 
-  return user;
+  return { user, token };
 }

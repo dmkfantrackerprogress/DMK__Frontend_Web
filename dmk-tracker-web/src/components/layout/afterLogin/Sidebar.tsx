@@ -108,7 +108,7 @@ export function Sidebar({ user }: { user: User }) {
                   </Link>
 
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/otp-log">
+                    href="/afterLogin/admin/otplog">
                     OTP LOG
                   </Link>
 
@@ -140,11 +140,6 @@ export function Sidebar({ user }: { user: User }) {
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
                     href="/afterLogin/admin/attractions-level">
                     Attractions Level
-                  </Link>
-
-                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/feedback">
-                    Feedback
                   </Link>
 
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
