@@ -545,7 +545,7 @@ export default function UserPage() {
             <div className="mt-4 flex justify-end gap-2">
               {!isEditMode && !confirmDelete && (
                 <>
-                  <button onClick={() => setIsEditMode(true)} className="bg-yellow-500 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
+                  {/*<button onClick={() => setIsEditMode(true)} className="bg-yellow-500 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-yellow-600">Edit</button>*/}
                   {/*<button onClick={() => setConfirmDelete(true)} className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Delete</button>*/}
                 </>
               )}
