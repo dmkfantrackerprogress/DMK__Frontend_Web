@@ -207,6 +207,9 @@ export default function CollectionTypePage() {
 const handleOpenCreateModal = async () => {
   setIsModalOpen(true);
 
+  setMessage("");
+  setError("");
+
   // reset form
   setCreateData({
     name: "",

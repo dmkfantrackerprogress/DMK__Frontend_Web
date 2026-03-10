@@ -228,6 +228,9 @@ export default function UserAttractionPage() {
 const handleOpenCreateModal = async () => {
   setIsModalOpen(true);
 
+  setMessage("");
+  setError("");
+
   // reset form
   setCreateData({
     collectionId: "",
@@ -249,6 +252,8 @@ const handleOpenCreateModal = async () => {
     setViewModalOpen(true);
     setIsEditMode(false);
     setConfirmDelete(false);
+    setMessage("");
+    setError("");
 
     // Fetch levels for dropdown
     setLoadingLevels(true);
@@ -262,12 +267,23 @@ const handleOpenCreateModal = async () => {
   };
 
   const handleSaveLevel = async () => {
+    setMessage("");
+    setError("");
     if (!selectedAttraction) return;
 
-    await fetch("/api/user/attractions/update", {
+    const res = await fetch("/api/user/attractions/update", {
       method: "POST",
       body: JSON.stringify({ id: selectedAttraction.id, level: selectedAttraction.level, attractionId: selectedAttraction.attractionId }),
     });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        setError(data.message);
+        return;
+    }
+
+    setMessage(data.message);
 
     setRows(rows.map((r) => (r.id === selectedAttraction.id ? selectedAttraction : r)));
     setIsEditMode(false);
@@ -783,6 +799,19 @@ const handleOpenCreateModal = async () => {
             <button onClick={() => setViewModalOpen(false)} className="absolute top-2 right-3 text-gray-500">✕</button>
 
             <h2 className="text-lg font-bold mb-4">Character Info</h2>
+
+            {/* Message Section */}
+            {error && (
+              <div className="bg-red-100 text-red-600 p-2 rounded mb-3">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="bg-green-100 text-green-600 p-2 rounded mb-3">
+                {message}
+              </div>
+            )}
 
             <div className="space-y-2 text-black dark:text-black-100">
               <p><strong>Collection:</strong> {selectedAttraction.collectionLabel}</p>
