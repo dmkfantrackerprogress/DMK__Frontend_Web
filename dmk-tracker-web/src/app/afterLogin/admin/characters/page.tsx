@@ -27,7 +27,7 @@ interface CharacterRow {
   deletedByLabel: string | null;
 }
 
-export default function CollectionTypePage() {
+export default function CharacterPage() {
   const [filters, setFilters] = useState({
     name: "",
     collectionId: "",
