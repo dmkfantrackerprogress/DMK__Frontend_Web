@@ -133,7 +133,7 @@ export function Sidebar({ user }: { user: User }) {
                   </Link>
 
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/attractions-level">
+                    href="/afterLogin/admin/attractionsLevel">
                     Attractions Level
                   </Link>
 
