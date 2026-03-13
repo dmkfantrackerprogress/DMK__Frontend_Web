@@ -11,7 +11,7 @@ interface Option {
 }
 
 // table listing data type
-interface CharacterRow {
+interface AttractionRow {
   id: number;
   name: string;
   collectionId: number;
@@ -27,7 +27,7 @@ interface CharacterRow {
   deletedByLabel: string | null;
 }
 
-export default function CharacterPage() {
+export default function AttractionPage() {
   const [filters, setFilters] = useState({
     name: "",
     collectionId: "",
@@ -37,7 +37,7 @@ export default function CharacterPage() {
 
   const [name_filter, setNameFilter] = useState<Option[]>([]);
   const [collection_filter, setCollectionFilter] = useState<Option[]>([]);
-  const [rows, setRows] = useState<CharacterRow[]>([]);
+  const [rows, setRows] = useState<AttractionRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
@@ -68,7 +68,7 @@ export default function CharacterPage() {
 
   // ========== VIEW/EDIT MODAL STATES ==========
     const [viewModalOpen, setViewModalOpen] = useState(false);
-    const [selectedCharacter, setSelectedCharacter] = useState<CharacterRow | null>(null);
+    const [selectedAttraction, setSelectedAttraction] = useState<AttractionRow | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [editCollection, setEditCollection] = useState<Option[]>([]); // for edit collection dropdown
@@ -79,7 +79,7 @@ export default function CharacterPage() {
   // ===============================
   useEffect(() => {
     fetchDropdown("collections_name");
-    fetchDropdown("characters");
+    fetchDropdown("attractions");
     handleFilter();
   }, []);
 
@@ -91,7 +91,7 @@ export default function CharacterPage() {
 
     const data = await res.json();
 
-    if (type === "characters") {
+    if (type === "attractions") {
       setNameFilter(data.dropdown);
     }
 
@@ -146,12 +146,12 @@ export default function CharacterPage() {
   const query = new URLSearchParams(params);
 
   const res = await fetch(
-    `/api/admin/characters/getCollectionCharactersList?${query.toString()}`
+    `/api/admin/attractions/getAttractionList?${query.toString()}`
   );
 
   const data = await res.json();
 
-  setRows(data.characters || []);
+  setRows(data.attractions || []);
 
   // pagination
   setPage(data.meta?.page || 1);
@@ -161,7 +161,7 @@ export default function CharacterPage() {
   setLoading(false);
 };
 
-  // create character
+  // create attractions
   const handleCreate = async () => {
   setMessage("");
   setError("");
@@ -172,7 +172,7 @@ export default function CharacterPage() {
     return;
   }
 
-  const res = await fetch("/api/admin/characters/create", {
+  const res = await fetch("/api/admin/attractions/create", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(createData),
@@ -220,8 +220,8 @@ const handleOpenCreateModal = async () => {
 // ===============================
   // VIEW MODAL LOGIC
   // ===============================
-  const openViewModal = async (row: CharacterRow) => {
-    setSelectedCharacter(row);
+  const openViewModal = async (row: AttractionRow) => {
+    setSelectedAttraction(row);
     setViewModalOpen(true);
     setIsEditMode(false);
     setConfirmDelete(false);
@@ -242,15 +242,15 @@ const handleOpenCreateModal = async () => {
   const handleSave = async () => {
     setMessage("");
     setError("");
-    if (!selectedCharacter) return;
+    if (!selectedAttraction) return;
 
     const updated = {
-        ...selectedCharacter,
-        name: createData.name || selectedCharacter.name,
-        collectionId: createData.collectionId ?? selectedCharacter.collectionId,
+        ...selectedAttraction,
+        name: createData.name || selectedAttraction.name,
+        collectionId: createData.collectionId ?? selectedAttraction.collectionId,
     };
 
-   const res = await fetch("/api/admin/characters/update", {
+   const res = await fetch("/api/admin/attractions/update", {
       method: "POST",
       body: JSON.stringify({ id: updated.id, name: updated.name, collectionId: updated.collectionId}),
     });
@@ -264,20 +264,20 @@ const handleOpenCreateModal = async () => {
 
     setMessage(data.message);
 
-    setRows(rows.map((r) => (r.id === selectedCharacter.id ? updated : r)));
+    setRows(rows.map((r) => (r.id === selectedAttraction.id ? updated : r)));
     setIsEditMode(false);
     window.location.reload();
   };
 
   const handleDelete = async () => {
-    if (!selectedCharacter) return;
+    if (!selectedAttraction) return;
 
-    await fetch("/api/admin/characters/delete", {
+    await fetch("/api/admin/attractions/delete", {
       method: "POST",
-      body: JSON.stringify({ id: selectedCharacter.id }),
+      body: JSON.stringify({ id: selectedAttraction.id }),
     });
 
-    setRows(rows.filter((r) => r.id !== selectedCharacter.id));
+    setRows(rows.filter((r) => r.id !== selectedAttraction.id));
     setViewModalOpen(false);
   };
 
@@ -301,7 +301,7 @@ const handleOpenCreateModal = async () => {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-black">
-          Character 
+          Attraction 
         </h1>
 
         <button
@@ -314,7 +314,7 @@ const handleOpenCreateModal = async () => {
       {/* ================= FILTER SECTION ================= */}
       <div className="bg-white p-4 rounded-xl shadow-md grid grid-cols-6 gap-4 text-black dark:text-black-100">
 
-        {/* Characters */}
+        {/* Attraction */}
         <Select<DropdownOption>
             className="text-black dark:text-black-100"
             classNamePrefix="rs"
@@ -323,7 +323,7 @@ const handleOpenCreateModal = async () => {
             onChange={(selected) =>
               handleNameChange(selected ? selected.value : "")
             }
-            placeholder="Select Character"
+            placeholder="Select Attraction"
             isClearable
             styles={{
               control: (base) => ({
@@ -430,7 +430,7 @@ const handleOpenCreateModal = async () => {
           )}
       </div>
 
-      {/* ================= CREATE Collection MODAL ================= */}
+      {/* ================= CREATE ATTRACTION MODAL ================= */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-black dark:text-black-100">
           <div className="bg-white w-[500px] p-6 rounded-xl shadow-lg relative">
@@ -443,7 +443,7 @@ const handleOpenCreateModal = async () => {
               ✕
             </button>
 
-            <h2 className="text-lg font-bold mb-4">Create Character</h2>
+            <h2 className="text-lg font-bold mb-4">Create Attraction</h2>
 
             {/* Message Section */}
             {error && (
@@ -460,8 +460,54 @@ const handleOpenCreateModal = async () => {
 
             <div className="space-y-3">
 
-              {/* Collection Name */}
-              <input
+                {/* Collection */}
+                <p>
+                    <strong>Collection:</strong>
+                    <Select
+                        options={collection_filter.map((c) => ({
+                            value: c.id,
+                            label: c.label,
+                        }))}
+                        value={
+                            collection_filter
+                            .map((c) => ({
+                                value: c.id,
+                                label: c.label,
+                            }))
+                            .find((option) => option.value === Number(createData.collectionId)) || null
+                        }
+                        onChange={(selected) =>
+                            setCreateData({
+                            ...createData,
+                            collectionId: selected?.value ?? null,
+                            })
+                        }
+                        placeholder="Select Collection"
+                        isClearable
+                        styles={{
+                            control: (base) => ({
+                            ...base,
+                            backgroundColor: "transparent",
+                            borderColor: "inherit",
+                            color: "inherit",
+                            }),
+                            singleValue: (base) => ({
+                            ...base,
+                            color: "inherit",
+                            }),
+                            menu: (base) => ({
+                            ...base,
+                            backgroundColor: "white",
+                            }),
+                        }}
+                    />
+                </p>
+                
+
+              {/* Attraction Name */}
+              <p>  
+                <strong>Attraction Name:</strong>
+                <input
                     type="text"
                     placeholder="Character Name"
                     required
@@ -471,47 +517,8 @@ const handleOpenCreateModal = async () => {
                     disabled={loading}
                     autoComplete="off"
                 />
-
-                {/* Collection */}
-                <Select
-                options={collection_filter.map((c) => ({
-                    value: c.id,
-                    label: c.label,
-                }))}
-                value={
-                    collection_filter
-                    .map((c) => ({
-                        value: c.id,
-                        label: c.label,
-                    }))
-                    .find((option) => option.value === Number(createData.collectionId)) || null
-                }
-                onChange={(selected) =>
-                    setCreateData({
-                    ...createData,
-                    collectionId: selected?.value ?? null,
-                    })
-                }
-                placeholder="Select Collection"
-                isClearable
-                styles={{
-                    control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                    }),
-                    singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                    }),
-                    menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                    }),
-                }}
-                />
-
+              </p>
+              
               <button
                 onClick={handleCreate}
                 className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
@@ -607,13 +614,13 @@ const handleOpenCreateModal = async () => {
       </div>
 
             {/* ================= VIEW / EDIT MODAL ================= */}
-      {viewModalOpen && selectedCharacter && (
+      {viewModalOpen && selectedAttraction && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-black dark:text-black-100">
           <div className="bg-white w-[500px] p-6 rounded-xl shadow-lg relative">
 
             <button onClick={() => setViewModalOpen(false)} className="absolute top-2 right-3 text-gray-500">✕</button>
 
-            <h2 className="text-lg font-bold mb-4">Character</h2>
+            <h2 className="text-lg font-bold mb-4">Attraction</h2>
 
             {/* Message Section */}
             {error && (
@@ -628,15 +635,15 @@ const handleOpenCreateModal = async () => {
               </div>
             )}
 
-            <div className="space-y-2 text-black dark:text-black-100">         
+            <div className="space-y-2 text-black dark:text-black-100">
                 <p>
                     <strong>Collection:</strong>{" "}
                     {isEditMode ? (
                     <Select
                         options={editCollection.map(l => ({ value: l.id, label: l.label }))}
                         value={editCollection.map(l => ({ value: l.id, label: l.label }))
-                        .find(o => o.value === selectedCharacter.collectionId) || null}
-                        onChange={selected => selectedCharacter && setSelectedCharacter({ ...selectedCharacter, collectionId: selected?.value || selectedCharacter.collectionId, collectionLabel: selected?.label || selectedCharacter.collectionLabel })}
+                        .find(o => o.value === selectedAttraction.collectionId) || null}
+                        onChange={selected => selectedAttraction && setSelectedAttraction({ ...selectedAttraction, collectionId: selected?.value || selectedAttraction.collectionId, collectionLabel: selected?.label || selectedAttraction.collectionLabel })}
                         placeholder="Select Collection"
                         isClearable
                         isDisabled={loadingCollection}
@@ -645,15 +652,15 @@ const handleOpenCreateModal = async () => {
                         singleValue: base => ({ ...base, color: "inherit" }),
                         }}
                     />
-                    ) : selectedCharacter.collectionLabel}
+                    ) : selectedAttraction.collectionLabel}
                 </p>
-                <p><strong>Character Name:</strong> {selectedCharacter.name}</p>
-                <p><strong>Created At:</strong> {selectedCharacter.createdAt ? new Date(selectedCharacter.createdAt).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Created By:</strong> {selectedCharacter.createdByLabel || "N/A"}</p>
-                <p><strong>Updated At:</strong> {selectedCharacter.updatedAt ? new Date(selectedCharacter.updatedAt).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Updated By:</strong> {selectedCharacter.updatedByLabel || "N/A"}</p>
-                <p><strong>Deleted At:</strong> {selectedCharacter.deletedAt ? new Date(selectedCharacter.deletedAt).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Deleted By:</strong> {selectedCharacter.deletedByLabel || "N/A"}</p>
+                <p><strong>Attraction Name:</strong> {selectedAttraction.name}</p>        
+                <p><strong>Created At:</strong> {selectedAttraction.createdAt ? new Date(selectedAttraction.createdAt).toLocaleDateString() : "N/A"}</p>
+                <p><strong>Created By:</strong> {selectedAttraction.createdByLabel || "N/A"}</p>
+                <p><strong>Updated At:</strong> {selectedAttraction.updatedAt ? new Date(selectedAttraction.updatedAt).toLocaleDateString() : "N/A"}</p>
+                <p><strong>Updated By:</strong> {selectedAttraction.updatedByLabel || "N/A"}</p>
+                <p><strong>Deleted At:</strong> {selectedAttraction.deletedAt ? new Date(selectedAttraction.deletedAt).toLocaleDateString() : "N/A"}</p>
+                <p><strong>Deleted By:</strong> {selectedAttraction.deletedByLabel || "N/A"}</p>
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
