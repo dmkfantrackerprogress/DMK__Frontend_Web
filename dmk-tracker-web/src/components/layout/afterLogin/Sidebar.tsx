@@ -38,14 +38,14 @@ export function Sidebar({ user }: { user: User }) {
 
       <aside
         className={`
-            absolute left-0 top-0 z-40
-            h-1000 w-64
-            bg-indigo-50 border-r
-            transform transition-transform duration-300
-            overflow-y-auto
-            ${open ? "translate-x-0" : "-translate-x-full"}
+          fixed left-0 top-0 z-60
+          h-screen w-64
+          bg-indigo-50 border-r
+          transform transition-transform duration-300
+          flex flex-col
+          ${open ? "translate-x-0" : "-translate-x-full"}
         `}
-     >
+      >
         <nav className="p-6 space-y-6 text-black min-h-full">
 
           {/* -------- USER GROUP (COLLAPSIBLE) -------- */}
