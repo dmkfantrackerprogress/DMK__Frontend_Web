@@ -456,7 +456,9 @@ const handleOpenCreateModal = async () => {
             <div className="space-y-3">
 
               {/* Collection Types Name */}
-              <input
+              <p>
+                <strong className="text-black dark:text-black-100">Collection Type Name:</strong>
+                <input
                     type="text"
                     placeholder="Collection Type Name"
                     required
@@ -466,7 +468,8 @@ const handleOpenCreateModal = async () => {
                     disabled={loading}
                     autoComplete="off"
                 />
-
+              </p>
+              
               <button
                 onClick={handleCreate}
                 className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"

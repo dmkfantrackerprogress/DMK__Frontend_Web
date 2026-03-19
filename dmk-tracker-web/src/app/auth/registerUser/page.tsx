@@ -197,37 +197,43 @@ export default function RegisterWithOTP() {
             <h1 className="text-2xl font-bold text-black dark:text-black-100">Register</h1>
             {message && <p className="text-sm text-red-500">{message}</p>}
 
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
-              disabled={loading}
-              autoComplete="off"
-            />
-
-            <div className="relative">
+            <p>
+              <strong className="text-black dark:text-black-100">Email:</strong>
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                type="email"
+                placeholder="Email"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
                 disabled={loading}
+                autoComplete="off"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                disabled={loading}
-              >
-                {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-              </button>
-            </div>
-
+            </p>
+            
+            <p>
+              <strong className="text-black dark:text-black-100">Password:</strong>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  disabled={loading}
+                >
+                  {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+                </button>
+              </div>
+            </p>
+            
             <button
               type="submit"
               disabled={loading}

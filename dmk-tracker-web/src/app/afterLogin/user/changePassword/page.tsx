@@ -81,55 +81,61 @@ export default function ChangePasswordPage() {
         })()}
 
         {/* OLD PASSWORD */}
-        <div className="relative w-full">
-          <input
-            type={showOld ? "text" : "password"}
-            placeholder="Old Password"
-            required
-            className="w-full border p-2 rounded pr-10 text-black dark:text-black-100"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            disabled={loading}
-          />
+        <p>
+          <strong className="text-black dark:text-black-100">OLD PASSWORD:</strong>
+          <div className="relative w-full">
+            <input
+              type={showOld ? "text" : "password"}
+              placeholder="Old Password"
+              required
+              className="w-full border p-2 rounded pr-10 text-black dark:text-black-100"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              disabled={loading}
+            />
 
-          <button
-            type="button"
-            onClick={() => setShowOld(!showOld)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
-          >
-            {showOld ? (
-              <EyeSlashIcon className="h-5 w-5" />
-            ) : (
-              <EyeIcon className="h-5 w-5" />
-            )}
-          </button>
-        </div>
-
+            <button
+              type="button"
+              onClick={() => setShowOld(!showOld)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showOld ? (
+                <EyeSlashIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </p>
+        
         {/* NEW PASSWORD */}
-        <div className="relative w-full">
-          <input
-            type={showNew ? "text" : "password"}
-            placeholder="New Password"
-            required
-            className="w-full border p-2 rounded pr-10 text-black dark:text-black-100"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            disabled={loading}
-          />
+        <p>
+          <strong className="text-black dark:text-black-100">NEW PASSWORD:</strong>
+          <div className="relative w-full">
+            <input
+              type={showNew ? "text" : "password"}
+              placeholder="New Password"
+              required
+              className="w-full border p-2 rounded pr-10 text-black dark:text-black-100"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              disabled={loading}
+            />
 
-          <button
-            type="button"
-            onClick={() => setShowNew(!showNew)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
-          >
-            {showNew ? (
-              <EyeSlashIcon className="h-5 w-5" />
-            ) : (
-              <EyeIcon className="h-5 w-5" />
-            )}
-          </button>
-        </div>
-
+            <button
+              type="button"
+              onClick={() => setShowNew(!showNew)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showNew ? (
+                <EyeSlashIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </p>
+        
         {/* PASSWORD STRENGTH */}
         {newPassword && (
           <div className="space-y-2">

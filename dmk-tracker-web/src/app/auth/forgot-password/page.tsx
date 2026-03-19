@@ -193,17 +193,20 @@ export default function forgotPassword() {
             <h1 className="text-2xl font-bold text-black dark:text-black-100">Forgot Password</h1>
             {message && <p className="text-sm text-red-500">{message}</p>}
 
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
-              disabled={loading}
-              autoComplete="off"
-            />
-
+            <p>
+              <strong className="text-black dark:text-black-100">Email:</strong>
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
+                disabled={loading}
+                autoComplete="off"
+              />
+            </p>
+            
             <button
               type="submit"
               disabled={loading}

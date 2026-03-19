@@ -558,194 +558,213 @@ const handleOpenCreateModal = async () => {
 
 
                 {/* Collection */}
-                <Select
-                options={collection_filter.map((c) => ({
-                    value: c.id,
-                    label: c.label,
-                }))}
-                value={
-                    collection_filter
-                    .map((c) => ({
+                <p>
+                  <strong className="text-black dark:text-black-100">Collection:</strong>
+                  <Select
+                    options={collection_filter.map((c) => ({
                         value: c.id,
                         label: c.label,
-                    }))
-                    .find((option) => option.value === Number(createData.collectionId)) || null
-                }
-                onChange={(selected) => {
-                    const collectionId = selected?.value ?? null;
-
-                    setCreateData({
-                    ...createData,
-                    collectionId,
-                    characterId: null, // reset character when collection changes
-                    });
-
-                    if (collectionId) {
-                        fetchDropdown("characters_after_collection", {collectionId: collectionId,});
-                    } else {
-                    setCharacterOptions([]);
+                    }))}
+                    value={
+                        collection_filter
+                        .map((c) => ({
+                            value: c.id,
+                            label: c.label,
+                        }))
+                        .find((option) => option.value === Number(createData.collectionId)) || null
                     }
-                }}
-                placeholder="Select Collection"
-                isClearable
-                styles={{
-                    control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                    }),
-                    singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                    }),
-                    menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                    }),
-                }}
-                />
+                    onChange={(selected) => {
+                        const collectionId = selected?.value ?? null;
 
+                        setCreateData({
+                        ...createData,
+                        collectionId,
+                        characterId: null, // reset character when collection changes
+                        });
+
+                        if (collectionId) {
+                            fetchDropdown("characters_after_collection", {collectionId: collectionId,});
+                        } else {
+                        setCharacterOptions([]);
+                        }
+                    }}
+                    placeholder="Select Collection"
+                    isClearable
+                    styles={{
+                        control: (base) => ({
+                        ...base,
+                        backgroundColor: "transparent",
+                        borderColor: "inherit",
+                        color: "inherit",
+                        }),
+                        singleValue: (base) => ({
+                        ...base,
+                        color: "inherit",
+                        }),
+                        menu: (base) => ({
+                        ...base,
+                        backgroundColor: "white",
+                        }),
+                    }}
+                  />
+                </p>
+                
                 {/* Character */}
-                <Select
-                options={characterOptions.map((c) => ({
-                    value: c.id,
-                    label: c.label,
-                }))}
-                value={
-                    characterOptions
-                    .map((c) => ({ value: c.id, label: c.label }))
-                    .find((option) => option.value === Number(createData.characterId)) || null
-                }
-                onChange={(selected) =>
-                    setCreateData({
-                    ...createData,
-                    characterId: selected?.value ?? null,
-                    })
-                }
-                placeholder={
-                    createData.collectionId
-                    ? "Select Character"
-                    : "Select Collection First"
-                }
-                isDisabled={!createData.collectionId}
-                styles={{
-                    control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                    }),
-                    singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                    }),
-                    menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                    }),
-                }}
-                />
+                <p>
+                  <strong className="text-black dark:text-black-100">Character:</strong>
+                  <Select
+                    options={characterOptions.map((c) => ({
+                        value: c.id,
+                        label: c.label,
+                    }))}
+                    value={
+                        characterOptions
+                        .map((c) => ({ value: c.id, label: c.label }))
+                        .find((option) => option.value === Number(createData.characterId)) || null
+                    }
+                    onChange={(selected) =>
+                        setCreateData({
+                        ...createData,
+                        characterId: selected?.value ?? null,
+                        })
+                    }
+                    placeholder={
+                        createData.collectionId
+                        ? "Select Character"
+                        : "Select Collection First"
+                    }
+                    isDisabled={!createData.collectionId}
+                    styles={{
+                        control: (base) => ({
+                        ...base,
+                        backgroundColor: "transparent",
+                        borderColor: "inherit",
+                        color: "inherit",
+                        }),
+                        singleValue: (base) => ({
+                        ...base,
+                        color: "inherit",
+                        }),
+                        menu: (base) => ({
+                        ...base,
+                        backgroundColor: "white",
+                        }),
+                    }}
+                  />
+                </p>          
 
                 {/* Level */}
-                <div className="flex items-center justify-center gap-4">
+                <p>
+                  <strong className="text-black dark:text-black-100">Level:</strong>
+                  <div className="flex items-center justify-center gap-4">
+                      {/* Minus */}
+                      <button
+                      type="button"
+                      onClick={() =>
+                          setCreateData({
+                          ...createData,
+                          level: Math.max(1, (createData.level ?? 1) - 1),
+                          })
+                      }
+                      disabled={loading}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 text-white text-xl font-bold hover:bg-red-600 transition disabled:opacity-50"
+                      >
+                      −
+                      </button>
 
-                    {/* Minus */}
-                    <button
-                    type="button"
-                    onClick={() =>
-                        setCreateData({
-                        ...createData,
-                        level: Math.max(1, (createData.level ?? 1) - 1),
-                        })
-                    }
-                    disabled={loading}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 text-white text-xl font-bold hover:bg-red-600 transition disabled:opacity-50"
-                    >
-                    −
-                    </button>
+                      {/* Level Display */}
+                      <div className="w-20 text-center border rounded-lg py-2 text-lg font-semibold bg-white-50 dark:bg-white-800">
+                      {createData.level ?? 1}
+                      </div>
 
-                    {/* Level Display */}
-                    <div className="w-20 text-center border rounded-lg py-2 text-lg font-semibold bg-white-50 dark:bg-white-800">
-                    {createData.level ?? 1}
-                    </div>
+                      {/* Plus */}
+                      <button
+                      type="button"
+                      onClick={() =>
+                          setCreateData({
+                          ...createData,
+                          level: Math.min(100, (createData.level ?? 1) + 1),
+                          })
+                      }
+                      disabled={loading}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white text-xl font-bold hover:bg-green-600 transition disabled:opacity-50"
+                      >
+                      +
+                      </button>
 
-                    {/* Plus */}
-                    <button
-                    type="button"
-                    onClick={() =>
-                        setCreateData({
-                        ...createData,
-                        level: Math.min(100, (createData.level ?? 1) + 1),
-                        })
-                    }
-                    disabled={loading}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white text-xl font-bold hover:bg-green-600 transition disabled:opacity-50"
-                    >
-                    +
-                    </button>
-
-                </div>
+                  </div>
+                </p>
+                
 
                 {/* Hour */}
-                <input
-                    type="number"
-                    placeholder="Hour"
-                    min={0}
-                    max={24}
-                    step={1}
-                    required
-                    className="w-full border p-2 rounded text-black dark:text-black-100"
-                    value={createData.hour}
-                    onChange={(e) =>
-                        setCreateData({
-                        ...createData,
-                        hour: e.target.value ?? 0,
-                        })
-                    }
-                    disabled={loading}
-                    autoComplete="off"
-                />
+                <p>
+                  <strong className="text-black dark:text-black-100">Hour:</strong>
+                  <input
+                      type="number"
+                      placeholder="Hour"
+                      min={0}
+                      max={24}
+                      step={1}
+                      required
+                      className="w-full border p-2 rounded text-black dark:text-black-100"
+                      value={createData.hour}
+                      onChange={(e) =>
+                          setCreateData({
+                          ...createData,
+                          hour: e.target.value ?? 0,
+                          })
+                      }
+                      disabled={loading}
+                      autoComplete="off"
+                  />
+                </p>
+                
 
                 {/* Minutes */}
-                <input
-                    type="number"
-                    placeholder="Minutes"
-                    min={0}
-                    max={59}
-                    step={1}
-                    required
-                    className="w-full border p-2 rounded text-black dark:text-black-100"
-                    value={createData.minute}
-                    onChange={(e) =>
-                        setCreateData({
-                        ...createData,
-                        minute: e.target.value ?? 0,
-                        })
-                    }
-                    disabled={loading}
-                    autoComplete="off"
-                />
-                
+                <p>
+                  <strong className="text-black dark:text-black-100">Minutes:</strong>
+                  <input
+                      type="number"
+                      placeholder="Minutes"
+                      min={0}
+                      max={59}
+                      step={1}
+                      required
+                      className="w-full border p-2 rounded text-black dark:text-black-100"
+                      value={createData.minute}
+                      onChange={(e) =>
+                          setCreateData({
+                          ...createData,
+                          minute: e.target.value ?? 0,
+                          })
+                      }
+                      disabled={loading}
+                      autoComplete="off"
+                  />
+                </p>
+                             
                 {/* Seconds */}
-                <input
-                    type="number"
-                    placeholder="Seconds"
-                    min={0}
-                    max={59}
-                    step={1}
-                    required
-                    className="w-full border p-2 rounded text-black dark:text-black-100"
-                    value={createData.second}
-                    onChange={(e) =>
-                        setCreateData({
-                        ...createData,
-                        second: e.target.value ?? 0,
-                        })
-                    }
-                    disabled={loading}
-                    autoComplete="off"
-                />
+                <p>
+                  <strong className="text-black dark:text-black-100">Seconds:</strong>
+                  <input
+                      type="number"
+                      placeholder="Seconds"
+                      min={0}
+                      max={59}
+                      step={1}
+                      required
+                      className="w-full border p-2 rounded text-black dark:text-black-100"
+                      value={createData.second}
+                      onChange={(e) =>
+                          setCreateData({
+                          ...createData,
+                          second: e.target.value ?? 0,
+                          })
+                      }
+                      disabled={loading}
+                      autoComplete="off"
+                  />
+                </p>
 
               <button
                 onClick={handleCreate}

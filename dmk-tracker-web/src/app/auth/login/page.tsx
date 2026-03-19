@@ -61,42 +61,48 @@ export default function LoginPage() {
           <p className="text-green-600 text-sm">{success}</p>
         )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          className="w-full border p-2 rounded text-black dark:text-black-100"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-          autoComplete="off"
-        />
-
-        <div className="relative w-full">
+        <p>
+          <strong className="text-black dark:text-black-100">Email:</strong>
           <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            type="email"
+            placeholder="Email"
             required
-            className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border p-2 rounded text-black dark:text-black-100"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
+            autoComplete="off"
           />
+        </p>
+        
+        <p>
+          <strong className="text-black dark:text-black-100">Password:</strong>
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              required
+              className="w-full border p-2 rounded pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-black-100"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
 
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            disabled={loading}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-          >
-            {showPassword ? (
-              <EyeSlashIcon className="h-5 w-5" />
-            ) : (
-              <EyeIcon className="h-5 w-5" />
-            )}
-          </button>
-        </div>
-
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              disabled={loading}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </p>
+       
         {/* ✅ NEW: Forgot Password Link */}
         <div className="text-right">
           <a

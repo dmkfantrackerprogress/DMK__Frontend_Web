@@ -529,118 +529,126 @@ const handleOpenCreateModal = async () => {
             <div className="space-y-3">
 
               {/* Collection */}
-              <Select
-                options={collections_characters.map((c) => ({
-                  value: c.id,
-                  label: c.label,
-                }))}
-                value={
-                  collections_characters
-                    .map((c) => ({
-                      value: c.id,
-                      label: c.label,
-                    }))
-                    .find(
-                      (option) => option.value === Number(createData.collectionId)
-                    ) || null
-                }
-                onChange={async (selected) => {
-                  const value = selected ? selected.value : "";
+              <p>
+                <strong className="text-black dark:text-black-100">Collection:</strong>
+                <Select
+                  options={collections_characters.map((c) => ({
+                    value: c.id,
+                    label: c.label,
+                  }))}
+                  value={
+                    collections_characters
+                      .map((c) => ({
+                        value: c.id,
+                        label: c.label,
+                      }))
+                      .find(
+                        (option) => option.value === Number(createData.collectionId)
+                      ) || null
+                  }
+                  onChange={async (selected) => {
+                    const value = selected ? selected.value : "";
 
-                  setCreateData({
-                    collectionId: value ? String(value) : "",
-                    characterId: "",
-                    level: "",
-                  });
+                    setCreateData({
+                      collectionId: value ? String(value) : "",
+                      characterId: "",
+                      level: "",
+                    });
 
-                  setLevels([]);
-                  setCharacters([]);
+                    setLevels([]);
+                    setCharacters([]);
 
-                  if (!value) return;
+                    if (!value) return;
 
-                  await fetchDropdown("characters", {
-                    collectionId: Number(value),
-                  });
-                }}
-                placeholder="Select Collection"
-                isClearable
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                  }),
-                  menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                  }),
-                  
-                }}
-              />
-
+                    await fetchDropdown("characters", {
+                      collectionId: Number(value),
+                    });
+                  }}
+                  placeholder="Select Collection"
+                  isClearable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: "transparent",
+                      borderColor: "inherit",
+                      color: "inherit",
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "inherit",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      backgroundColor: "white",
+                    }),
+                    
+                  }}
+                />
+              </p>
+              
               {/* Character */}
-              <Select
-                options={characters.map((c) => ({
-                  value: c.id,
-                  label: c.label,
-                }))}
-                value={
-                  characters
-                    .map((c) => ({
-                      value: c.id,
-                      label: c.label,
-                    }))
-                    .find(
-                      (option) =>
-                        option.value === Number(createData.characterId)
-                    ) || null
-                }
-                onChange={async (selected) => {
-                  const value = selected ? selected.value : "";
+              <p>
+                <strong className="text-black dark:text-black-100">Character:</strong>
+                <Select
+                  options={characters.map((c) => ({
+                    value: c.id,
+                    label: c.label,
+                  }))}
+                  value={
+                    characters
+                      .map((c) => ({
+                        value: c.id,
+                        label: c.label,
+                      }))
+                      .find(
+                        (option) =>
+                          option.value === Number(createData.characterId)
+                      ) || null
+                  }
+                  onChange={async (selected) => {
+                    const value = selected ? selected.value : "";
 
-                  setCreateData({
-                    ...createData,
-                    characterId: value ? String(value) : "",
-                    level: "",
-                  });
+                    setCreateData({
+                      ...createData,
+                      characterId: value ? String(value) : "",
+                      level: "",
+                    });
 
-                  setLevels([]);
+                    setLevels([]);
 
-                  if (!value) return;
+                    if (!value) return;
 
-                  await fetchDropdown("character_levels", {
-                    characterId: Number(value),
-                  });
-                }}
-                placeholder="Select Character"
-                isClearable
-                isDisabled={!createData.collectionId}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                  }),
-                  menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                  }),
-                  
-                }}
-              />
-
+                    await fetchDropdown("character_levels", {
+                      characterId: Number(value),
+                    });
+                  }}
+                  placeholder="Select Character"
+                  isClearable
+                  isDisabled={!createData.collectionId}
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: "transparent",
+                      borderColor: "inherit",
+                      color: "inherit",
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "inherit",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      backgroundColor: "white",
+                    }),
+                    
+                  }}
+                />
+              </p>
+              
               {/* Level */}
-              <Select
+              <p>
+                <strong className="text-black dark:text-black-100">Level:</strong>
+                <Select
                     options={levels.map((l) => ({
                       value: l.level,
                       label: l.label,
@@ -682,7 +690,8 @@ const handleOpenCreateModal = async () => {
                     
                   }}
                 />
-
+              </p>
+              
               <button
                 onClick={handleCreate}
                 className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"

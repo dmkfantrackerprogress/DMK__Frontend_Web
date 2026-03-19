@@ -460,8 +460,10 @@ const handleOpenCreateModal = async () => {
 
             <div className="space-y-3">
 
-              {/* Collection Name */}
-              <input
+              {/* Character Name */}
+              <p>
+                <strong className="text-black dark:text-black-100">Character Name:</strong>
+                <input
                     type="text"
                     placeholder="Character Name"
                     required
@@ -471,47 +473,51 @@ const handleOpenCreateModal = async () => {
                     disabled={loading}
                     autoComplete="off"
                 />
-
+              </p>
+              
                 {/* Collection */}
-                <Select
-                options={collection_filter.map((c) => ({
-                    value: c.id,
-                    label: c.label,
-                }))}
-                value={
-                    collection_filter
-                    .map((c) => ({
+                <p>
+                  <strong className="text-black dark:text-black-100">Collection:</strong>
+                  <Select
+                    options={collection_filter.map((c) => ({
                         value: c.id,
                         label: c.label,
-                    }))
-                    .find((option) => option.value === Number(createData.collectionId)) || null
-                }
-                onChange={(selected) =>
-                    setCreateData({
-                    ...createData,
-                    collectionId: selected?.value ?? null,
-                    })
-                }
-                placeholder="Select Collection"
-                isClearable
-                styles={{
-                    control: (base) => ({
-                    ...base,
-                    backgroundColor: "transparent",
-                    borderColor: "inherit",
-                    color: "inherit",
-                    }),
-                    singleValue: (base) => ({
-                    ...base,
-                    color: "inherit",
-                    }),
-                    menu: (base) => ({
-                    ...base,
-                    backgroundColor: "white",
-                    }),
-                }}
-                />
-
+                    }))}
+                    value={
+                        collection_filter
+                        .map((c) => ({
+                            value: c.id,
+                            label: c.label,
+                        }))
+                        .find((option) => option.value === Number(createData.collectionId)) || null
+                    }
+                    onChange={(selected) =>
+                        setCreateData({
+                        ...createData,
+                        collectionId: selected?.value ?? null,
+                        })
+                    }
+                    placeholder="Select Collection"
+                    isClearable
+                    styles={{
+                        control: (base) => ({
+                        ...base,
+                        backgroundColor: "transparent",
+                        borderColor: "inherit",
+                        color: "inherit",
+                        }),
+                        singleValue: (base) => ({
+                        ...base,
+                        color: "inherit",
+                        }),
+                        menu: (base) => ({
+                        ...base,
+                        backgroundColor: "white",
+                        }),
+                    }}
+                  />
+                </p>
+                
               <button
                 onClick={handleCreate}
                 className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
