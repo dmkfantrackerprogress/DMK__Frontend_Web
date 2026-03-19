@@ -54,8 +54,17 @@ export default function UserAttractionPage() {
   const [createData, setCreateData] = useState({
     collectionId: "",
     attractionId: "",
-    level: "",
+    level: null as number | null,
   });
+
+  // create level defination
+  const levelValues =
+    levels
+      ?.map((l) => l.level)
+      .filter((l): l is number => l !== undefined) ?? [];
+
+  const minLevel = levelValues.length ? Math.min(...levelValues) : 0;
+  const maxLevel = levelValues.length ? Math.max(...levelValues) : 0;
 
   // ========== VIEW/EDIT MODAL STATES ==========
     const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -64,6 +73,20 @@ export default function UserAttractionPage() {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [editLevels, setEditLevels] = useState<Option[]>([]);
     const [loadingLevels, setLoadingLevels] = useState(false);
+
+    const editLevelValues =
+    editLevels
+      ?.map((l) => l.level)
+      .filter((l): l is number => l !== undefined) ?? [];
+
+
+    const editMinLevel = editLevelValues.length
+      ? Math.min(...editLevelValues)
+      : 1;
+
+    const editMaxLevel = editLevelValues.length
+      ? Math.max(...editLevelValues)
+      : 1;
 
   // ===============================
   // FETCH COLLECTION DROPDOWN
@@ -74,6 +97,21 @@ export default function UserAttractionPage() {
     fetchDropdown("attraction_levels_registered");
     handleFilter();
   }, []);
+
+  useEffect(() => {
+      if (levels.length) {
+        const values = levels
+          .map((l) => l.level)
+          .filter((l): l is number => l !== undefined);
+  
+        const min = Math.min(...values);
+  
+        setCreateData((prev) => ({
+          ...prev,
+          level: min,
+        }));
+      }
+    }, [levels]);
 
   const fetchDropdown = async (type: string, extra?: any) => {
     const res = await fetch("/api/user/dropdown", {
@@ -187,7 +225,7 @@ export default function UserAttractionPage() {
   setError("");
   setSuccess(false);
 
-  if (createData.collectionId === "" || createData.attractionId === "" || createData.level === "") {
+  if (createData.collectionId === "" || createData.attractionId === "" || createData.level == null) {
     setError("Please select all fields.");
     return;
   }
@@ -213,7 +251,7 @@ export default function UserAttractionPage() {
   setCreateData({
     collectionId: "",
     attractionId: "",
-    level: "",
+    level: null as number | null,
   });
 
   // auto close after 1.5s
@@ -235,7 +273,7 @@ const handleOpenCreateModal = async () => {
   setCreateData({
     collectionId: "",
     attractionId: "",
-    level: "",
+    level: null as number | null,
   });
 
   setAttractions([]);
@@ -549,7 +587,7 @@ const handleOpenCreateModal = async () => {
                     setCreateData({
                       collectionId: value ? String(value) : "",
                       attractionId: "",
-                      level: "",
+                      level: null as number | null,
                     });
 
                     setLevels([]);
@@ -609,7 +647,7 @@ const handleOpenCreateModal = async () => {
                     setCreateData({
                       ...createData,
                       attractionId: value ? String(value) : "",
-                      level: "",
+                      level: null as number | null,
                     });
 
                     setLevels([]);
@@ -646,48 +684,59 @@ const handleOpenCreateModal = async () => {
               {/* Level */}
               <p>
                 <strong className="text-black dark:text-black-100">Level:</strong>
-                <Select
-                    options={levels.map((l) => ({
-                      value: l.level,
-                      label: l.label,
-                    }))}
-                    value={
-                      levels
-                        .map((l) => ({
-                          value: l.level,
-                          label: l.label,
-                        }))
-                        .find(
-                          (option) => option.value === Number(createData.level)
-                        ) || null
-                    }
-                    onChange={(selected) =>
-                      setCreateData({
-                        ...createData,
-                        level: selected ? String(selected.value) : "",
-                      })
-                    }
-                    placeholder="Select Level"
-                    isClearable
-                    isDisabled={!createData.attractionId}
-                    styles={{
-                    control: (base) => ({
-                      ...base,
-                      backgroundColor: "transparent",
-                      borderColor: "inherit",
-                      color: "inherit",
-                    }),
-                    singleValue: (base) => ({
-                      ...base,
-                      color: "inherit",
-                    }),
-                    menu: (base) => ({
-                      ...base,
-                      backgroundColor: "white",
-                    }),
-                    
-                  }}
-                />
+                <div className="flex items-center justify-center gap-4">
+                      {/* Minus */}
+                      <button
+                      type="button"
+                      onClick={() => {
+                        const currentIndex = levelValues.indexOf(createData.level ?? minLevel);
+                        const newLevel = levelValues[Math.max(0, currentIndex - 1)];
+
+                        setCreateData({
+                          ...createData,
+                          level: newLevel,
+                        });
+                      }}
+                      disabled={
+                        loading ||
+                        !levelValues.length ||
+                        levelValues.indexOf(createData.level ?? minLevel) <= 0
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 text-white text-xl font-bold hover:bg-red-600 transition disabled:opacity-50"
+                      >
+                      −
+                      </button>
+
+                      {/* Level Display */}
+                      <div className="w-20 text-center border rounded-lg py-2 text-lg font-semibold bg-white-50 dark:bg-white-800">
+                        {createData.level ?? minLevel}
+                      </div>
+
+                      {/* Plus */}
+                      <button
+                      type="button"
+                      onClick={() => {
+                        const currentIndex = levelValues.indexOf(createData.level ?? minLevel);
+                        const newLevel =
+                          levelValues[Math.min(levelValues.length - 1, currentIndex + 1)];
+
+                        setCreateData({
+                          ...createData,
+                          level: newLevel,
+                        });
+                      }}
+                      disabled={
+                        loading ||
+                        !levelValues.length ||
+                        levelValues.indexOf(createData.level ?? minLevel) >=
+                          levelValues.length - 1
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white text-xl font-bold hover:bg-green-600 transition disabled:opacity-50"
+                      >
+                      +
+                      </button>
+
+                  </div>
               </p>
               
               <button
@@ -829,20 +878,69 @@ const handleOpenCreateModal = async () => {
               <p>
                 <strong>Level:</strong>{" "}
                 {isEditMode ? (
-                  <Select
-                    options={editLevels.map(l => ({ value: l.level, label: l.label }))}
-                    value={editLevels.map(l => ({ value: l.level, label: l.label }))
-                      .find(o => o.value === selectedAttraction.level) || null}
-                    onChange={(selected) => { if (!selectedAttraction) return; setSelectedAttraction({...selectedAttraction,level: selected?.value ?? selectedAttraction.level,});}}
-                    placeholder="Select Level"
-                    isClearable
-                    isDisabled={loadingLevels}
-                    styles={{
-                      control: base => ({ ...base, backgroundColor: "transparent" }),
-                      singleValue: base => ({ ...base, color: "inherit" }),
-                    }}
-                  />
-                ) : selectedAttraction.level}
+                  <div className="flex items-center justify-center gap-4">
+                    
+                    {/* Minus */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!selectedAttraction) return;
+
+                        const currentIndex = editLevelValues.indexOf(selectedAttraction.level ?? editMinLevel);
+                        const newLevel = editLevelValues[Math.max(0, currentIndex - 1)];
+
+                        setSelectedAttraction({
+                          ...selectedAttraction,
+                          level: newLevel,
+                        });
+                      }}
+                      disabled={
+                        loadingLevels ||
+                        !editLevelValues.length ||
+                        editLevelValues.indexOf(selectedAttraction.level ?? editMinLevel) <= 0
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 text-white text-xl font-bold hover:bg-red-600 transition disabled:opacity-50"
+                    >
+                      −
+                    </button>
+
+                    {/* Display */}
+                    <div className="w-20 text-center border rounded-lg py-2 text-lg font-semibold bg-white-50 dark:bg-white-800">
+                      {selectedAttraction.level}
+                    </div>
+
+                    {/* Plus */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!selectedAttraction) return;
+
+                        const currentIndex = editLevelValues.indexOf(selectedAttraction.level ?? editMinLevel);
+                        const newLevel =
+                          editLevelValues[
+                            Math.min(editLevelValues.length - 1, currentIndex + 1)
+                          ];
+
+                        setSelectedAttraction({
+                          ...selectedAttraction,
+                          level: newLevel,
+                        });
+                      }}
+                      disabled={
+                        loadingLevels ||
+                        !editLevelValues.length ||
+                        editLevelValues.indexOf(selectedAttraction.level ?? editMinLevel) >=
+                          editLevelValues.length - 1
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white text-xl font-bold hover:bg-green-600 transition disabled:opacity-50"
+                    >
+                      +
+                    </button>
+
+                  </div>
+                ) : (
+                  selectedAttraction.level
+                )}
               </p>
               <p><strong>Time to Max: </strong> 
                 {selectedAttraction.levelsRemaining === 0 ? (
