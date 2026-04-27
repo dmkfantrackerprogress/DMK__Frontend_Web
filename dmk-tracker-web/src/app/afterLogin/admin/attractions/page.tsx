@@ -166,9 +166,11 @@ export default function AttractionPage() {
   setMessage("");
   setError("");
   setSuccess(false);
+  setLoading(true);
 
   if (!createData.name || !createData.collectionId) {
     setError("Please fill all fields.");
+    setLoading(false);
     return;
   }
 
@@ -182,6 +184,7 @@ export default function AttractionPage() {
 
   if (!res.ok) {
     setError(data.message);
+    setLoading(false);
     return;
   }
 
@@ -200,6 +203,7 @@ export default function AttractionPage() {
     setIsModalOpen(false);
     setMessage("");
     setSuccess(false);
+    setLoading(false);
     window.location.reload();
   }, 1500);
 };
@@ -242,6 +246,7 @@ const handleOpenCreateModal = async () => {
   const handleSave = async () => {
     setMessage("");
     setError("");
+    setLoading(true);
     if (!selectedAttraction) return;
 
     const updated = {
@@ -259,6 +264,7 @@ const handleOpenCreateModal = async () => {
 
     if (!res.ok) {
         setError(data.message);
+        setLoading(false);
         return;
     }
 
@@ -521,10 +527,10 @@ const handleOpenCreateModal = async () => {
               
               <button
                 onClick={handleCreate}
-                className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
+                className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700 disabled:opacity-50"
                 disabled={loading}
               >
-                Create
+                {loading ? "Creating..." : "Create"}
               </button>
 
             </div>
@@ -671,7 +677,7 @@ const handleOpenCreateModal = async () => {
                 </>
               )}
 
-              {isEditMode && <button onClick={handleSave} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700" disabled={loading}>Save</button>}
+              {isEditMode && <button onClick={handleSave} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50" disabled={loading}>{loading ? "Saving..." : "Save"}</button>}
 
               {confirmDelete && (
                 <>

@@ -228,9 +228,11 @@ export default function UserCharacterPage() {
   setMessage("");
   setError("");
   setSuccess(false);
+  setLoading(true);
 
   if (!createData.collectionId || !createData.characterId || !createData.level) {
     setError("Please select all fields.");
+    setLoading(false);
     return;
   }
 
@@ -244,6 +246,7 @@ export default function UserCharacterPage() {
 
   if (!res.ok) {
     setError(data.message);
+    setLoading(false);
     return;
   }
 
@@ -263,6 +266,7 @@ export default function UserCharacterPage() {
     setIsModalOpen(false);
     setMessage("");
     setSuccess(false);
+    setLoading(false);
     window.location.reload();
   }, 1500);
 };
@@ -310,6 +314,7 @@ const handleOpenCreateModal = async () => {
   const handleSaveLevel = async () => {
     setMessage("");
     setError("");
+    setLoading(true);
     if (!selectedCharacter) return;
 
     const res = await fetch("/api/user/characters/update", {
@@ -321,6 +326,7 @@ const handleOpenCreateModal = async () => {
 
     if (!res.ok) {
         setError(data.message);
+        setLoading(false);
         return;
     }
 
@@ -743,10 +749,10 @@ const handleOpenCreateModal = async () => {
               
               <button
                 onClick={handleCreate}
-                className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700"
+                className="bg-green-600 text-black dark:text-black-100 w-full p-2 rounded hover:bg-green-700 disabled:opacity-50"
                 disabled={loading}
               >
-                Create
+                {loading ? "Creating..." : "Create"}
               </button>
 
             </div>
@@ -967,7 +973,10 @@ const handleOpenCreateModal = async () => {
                 </>
               )}
 
-              {isEditMode && <button onClick={handleSaveLevel} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700" disabled={loading}>Save</button>}
+              {isEditMode && 
+              <button onClick={handleSaveLevel} className="bg-green-600 text-black dark:text-black-100 px-3 py-1 rounded hover:bg-green-700 disabled:opacity-50" disabled={loading}>
+                 {loading ? "Saving..." : "Save"}
+              </button>}
 
               {confirmDelete && (
                 <>
