@@ -261,14 +261,18 @@ export default function UserCharacterPage() {
     level: null as number | null,
   });
 
+  setMessage("");
+  setSuccess(false);
+  setLoading(false);
+
   // auto close after 1.5s
-  setTimeout(() => {
+ /* setTimeout(() => {
     setIsModalOpen(false);
     setMessage("");
     setSuccess(false);
     setLoading(false);
     window.location.reload();
-  }, 1500);
+  }, 1500);*/
 };
 
 const handleOpenCreateModal = async () => {
