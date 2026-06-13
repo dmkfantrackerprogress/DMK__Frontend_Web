@@ -27,3 +27,16 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const metadata = {
+  title: 'DMK Tracker',
+  description: 'DMK Tracker',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'DMK Tracker',
+  },
+  icons: {
+    apple: '/apple-touch-icon.png',
+  },
+};
