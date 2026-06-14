@@ -501,24 +501,24 @@ const handleOpenCreateModal = async () => {
           />
 
         {/* From Date */}
-        <input
+        {/*<input
           type="date"
           className="border p-2 rounded"
           value={filters.fromDate}
           onChange={(e) =>
             setFilters({ ...filters, fromDate: e.target.value })
           }
-        />
+        />*/}
 
         {/* To Date */}
-        <input
+        {/*<input
           type="date"
           className="border p-2 rounded"
           value={filters.toDate}
           onChange={(e) =>
             setFilters({ ...filters, toDate: e.target.value })
           }
-        />
+        />*/}
 
         {/* Filter Button */}
         <button
@@ -772,7 +772,7 @@ const handleOpenCreateModal = async () => {
               <th className="p-2 border">Attraction</th>
               <th className="p-2 border">Level</th>
               <th className="p-2 border">Time to Max</th>
-              <th className="p-2 border">Created At</th>
+              {/*<th className="p-2 border">Created At</th>*/}
               <th className="p-2 border">Action</th>
             </tr>
           </thead>
@@ -809,9 +809,9 @@ const handleOpenCreateModal = async () => {
                       row.timeToMax
                     )}
                   </td>
-                  <td className="p-2 border text-center">
+                  {/*<td className="p-2 border text-center">
                     {new Date(row.createdAt).toLocaleDateString()}
-                  </td>
+                  </td>*/}
                   <td className="p-2 border text-center">
                     <button
                       className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
@@ -965,7 +965,7 @@ const handleOpenCreateModal = async () => {
                       selectedAttraction.timeToMax
                     )}
               </p>
-              <p><strong>Created At:</strong> {new Date(selectedAttraction.createdAt).toLocaleDateString()}</p>
+              {/*<p><strong>Created At:</strong> {new Date(selectedAttraction.createdAt).toLocaleDateString()}</p>*/}
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
