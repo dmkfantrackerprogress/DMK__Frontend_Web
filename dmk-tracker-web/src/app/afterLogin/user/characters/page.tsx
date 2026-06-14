@@ -385,7 +385,7 @@ const handleOpenCreateModal = async () => {
         </button>
       </div>
       {/* ================= FILTER SECTION ================= */}
-      <div className="bg-white p-4 rounded-xl shadow-md grid grid-cols-6 gap-4 text-black dark:text-black-100">
+      <div className="bg-white p-4 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 text-black dark:text-black-100">
 
         {/* Collection */}
         <Select
@@ -526,7 +526,7 @@ const handleOpenCreateModal = async () => {
         {/* Filter Button */}
         <button
           onClick={() => handleFilter(1)}
-          className="bg-blue-600 text-black dark:text-black-100 rounded p-2"
+          className="bg-blue-600 text-black dark:text-black-100 rounded p-2 w-full"
         >
           {loading ? "Loading..." : "Filter"}
         </button>
@@ -539,7 +539,7 @@ const handleOpenCreateModal = async () => {
             filters.toDate) && (
             <button
               onClick={handleResetFilter}
-              className="bg-gray-500 rounded p-2 hover:bg-gray-600 transition text-black dark:text-black-100"
+              className="bg-gray-500 rounded p-2 hover:bg-gray-600 transition text-black dark:text-black-100 w-full"
             >
               Reset
             </button>
@@ -766,97 +766,150 @@ const handleOpenCreateModal = async () => {
 
       {/* ================= TABLE SECTION ================= */}
       <div className="bg-white p-4 rounded-xl shadow-md text-black dark:text-black-100">
-        <table className="w-full border">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-2 border">No.</th>
-              <th className="p-2 border">Collection</th>
-              <th className="p-2 border">Character</th>
-              <th className="p-2 border">Level</th>
-              <th className="p-2 border">Time to Max</th>
-              {/*<th className="p-2 border">Created At</th>*/}
-              <th className="p-2 border">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+         {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full border">
+            <thead className="bg-gray-100">
               <tr>
-                <td colSpan={7} className="text-center p-4">
-                  Loading...
-                </td>
+                <th className="p-2 border">No.</th>
+                <th className="p-2 border">Collection</th>
+                <th className="p-2 border">Character</th>
+                <th className="p-2 border">Level</th>
+                <th className="p-2 border">Time to Max</th>
+                <th className="p-2 border">Action</th>
               </tr>
-            ) : rows.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="text-center p-4">
-                  No data found
-                </td>
-              </tr>
-            ) : (
-              rows.map((row) => (
-                <tr key={row.id}>
-                  <td className="p-2 border text-center">{row.id}</td>
-                  <td className="p-2 border">{row.collectionLabel}</td>
-                  <td className="p-2 border">{row.characterLabel}</td>
-                  <td className="p-2 border text-center">{row.level}</td>
-                  <td className="p-2 border text-center">
-                    {row.levelsRemaining === 0 ? (
-                      <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 font-semibold text-sm">
-                        ⭐ Max Level
-                      </span>
-                    ) : row.levelsRemaining <= 3 ? (
-                      <span className="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
-                        ⚡ Almost Max ({row.timeToMax})
-                      </span>
-                    ) : (
-                      row.timeToMax
-                    )}
-                  </td>
-                  {/*<td className="p-2 border text-center">
-                    {new Date(row.createdAt).toLocaleDateString()}
-                  </td>*/}
-                  <td className="p-2 border text-center">
-                    <button
-                      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                      onClick={() => openViewModal(row)}
-                    >
-                      <FaEye />
-                    </button>
+            </thead>
+
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="text-center p-4">
+                    Loading...
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : rows.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center p-4">
+                    No data found
+                  </td>
+                </tr>
+              ) : (
+                rows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="p-2 border text-center">{row.id}</td>
+                    <td className="p-2 border">{row.collectionLabel}</td>
+                    <td className="p-2 border">{row.characterLabel}</td>
+                    <td className="p-2 border text-center">{row.level}</td>
+
+                    <td className="p-2 border text-center">
+                      {row.levelsRemaining === 0 ? (
+                        <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 font-semibold text-sm">
+                          ⭐ Max Level
+                        </span>
+                      ) : row.levelsRemaining <= 3 ? (
+                        <span className="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
+                          ⚡ Almost Max ({row.timeToMax})
+                        </span>
+                      ) : (
+                        row.timeToMax
+                      )}
+                    </td>
+
+                    <td className="p-2 border text-center">
+                      <button
+                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                        onClick={() => openViewModal(row)}
+                      >
+                        <FaEye />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+         {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            <div className="text-center p-4">Loading...</div>
+          ) : rows.length === 0 ? (
+            <div className="text-center p-4">No data found</div>
+          ) : (
+            rows.map((row) => (
+              <div
+                key={row.id}
+                className="border rounded-xl p-4 shadow-sm bg-white"
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <p className="font-semibold">
+                      {row.collectionLabel}
+                    </p>
+                    <p className="text-black-600">
+                      {row.characterLabel}
+                    </p>
+                  </div>
+
+                  <span className="text-sm bg-gray-100 px-2 py-1 rounded">
+                    Lv. {row.level}
+                  </span>
+                </div>
+
+                <div className="mb-3">
+                  {row.levelsRemaining === 0 ? (
+                    <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 font-semibold text-sm">
+                      ⭐ Max Level
+                    </span>
+                  ) : row.levelsRemaining <= 3 ? (
+                    <span className="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
+                      ⚡ Almost Max ({row.timeToMax})
+                    </span>
+                  ) : (
+                    <span className="text-gray-700">
+                      Time to Max: {row.timeToMax}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+                  onClick={() => openViewModal(row)}
+                >
+                  View Details
+                </button>
+              </div>
+            ))
+          )}
+        </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
-
+        <div className="flex flex-col md:flex-row justify-between items-center gap-3 mt-4">
           <div className="text-sm text-gray-600">
             Total: {total}
           </div>
 
-          <div className="flex gap-2">
-
+          <div className="flex items-center gap-2">
             <button
               disabled={page === 1}
               onClick={() => handleFilter(page - 1)}
-              className="px-3 py-1 border rounded disabled:opacity-40"
+              className="px-4 py-2 border rounded disabled:opacity-40"
             >
               Prev
             </button>
 
-            <span className="px-3 py-1">
+            <span className="px-3 py-2 text-sm">
               Page {page} / {totalPages}
             </span>
 
             <button
               disabled={page === totalPages}
               onClick={() => handleFilter(page + 1)}
-              className="px-3 py-1 border rounded disabled:opacity-40"
+              className="px-4 py-2 border rounded disabled:opacity-40"
             >
               Next
             </button>
-
           </div>
         </div>
       </div>
