@@ -250,10 +250,13 @@ export default function UserCharacterPage() {
     return;
   }
 
+  handleFilter();
+  fetchDropdown("collections_characters_registered");
+  fetchDropdown("characters_registered");
+  fetchDropdown("character_levels_registered");
+
   setSuccess(true);
   setMessage(data.message);
-
-  handleFilter();
 
   setCreateData({
     collectionId: "",
@@ -845,11 +848,11 @@ const handleOpenCreateModal = async () => {
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <p className="font-semibold">
-                      {row.collectionLabel}
-                    </p>
-                    <p className="text-black-600">
                       {row.characterLabel}
                     </p>
+                    <p className="text-black-600">
+                      {row.collectionLabel}
+                    </p>                 
                   </div>
 
                   <span className="text-sm bg-gray-100 px-2 py-1 rounded">
