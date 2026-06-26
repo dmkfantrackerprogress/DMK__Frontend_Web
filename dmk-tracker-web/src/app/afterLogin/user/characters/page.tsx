@@ -774,7 +774,7 @@ const handleOpenCreateModal = async () => {
           <table className="w-full border">
             <thead className="bg-gray-100">
               <tr>
-                <th className="p-2 border">No.</th>
+                {/*<th className="p-2 border">No.</th>*/}
                 <th className="p-2 border">Collection</th>
                 <th className="p-2 border">Character</th>
                 <th className="p-2 border">Level</th>
@@ -799,7 +799,7 @@ const handleOpenCreateModal = async () => {
               ) : (
                 rows.map((row) => (
                   <tr key={row.id}>
-                    <td className="p-2 border text-center">{row.id}</td>
+                    {/*<td className="p-2 border text-center">{row.id}</td>*/}
                     <td className="p-2 border">{row.collectionLabel}</td>
                     <td className="p-2 border">{row.characterLabel}</td>
                     <td className="p-2 border text-center">{row.level}</td>

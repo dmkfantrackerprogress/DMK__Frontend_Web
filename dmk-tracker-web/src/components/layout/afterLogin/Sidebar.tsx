@@ -46,7 +46,7 @@ export function Sidebar({ user }: { user: User }) {
           ${open ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        <nav className="p-6 space-y-6 text-black min-h-full">
+        <nav className="p-6 space-y-6 text-black min-h-full overflow-y-auto">
 
           {/* -------- USER GROUP (COLLAPSIBLE) -------- */}
           <div>
