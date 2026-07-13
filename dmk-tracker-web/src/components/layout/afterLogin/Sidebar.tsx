@@ -22,8 +22,30 @@ export function Sidebar({ user }: { user: User }) {
   const [showUser, setShowUser] = useState(true);
   const [showAdmin, setShowAdmin] = useState(true);
 
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  //upcoming event 
+  const [totalUpcomingEvent, setTotalUpcomingEvent] = useState(0);
+
+  const fetchTotalUpcomingEvent = async () => {
+    const res = await fetch("/api/user/event-calendar/getTotalUpcomingEvent", {
+      credentials: "include",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return;
+    }
+
+    setTotalUpcomingEvent(data.event);
+
+  };
+
   useEffect(() => {
     close();
+    fetchTotalUpcomingEvent();
   }, [pathname]);
 
   return (
@@ -103,21 +125,6 @@ export function Sidebar({ user }: { user: User }) {
                   </Link>
 
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/manageUsers">
-                    Manage Users
-                  </Link>
-
-                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/collectiontypes">
-                    Collection Types
-                  </Link>
-
-                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
-                    href="/afterLogin/admin/collections">
-                    Collections
-                  </Link>
-
-                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
                     href="/afterLogin/admin/characters">
                     Characters
                   </Link>
@@ -135,6 +142,32 @@ export function Sidebar({ user }: { user: User }) {
                   <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
                     href="/afterLogin/admin/attractionsLevel">
                     Attractions Level
+                  </Link>
+
+                  <Link className="flex items-center gap-2 px-3 py-2 rounded hover:bg-indigo-100"
+                    href="/afterLogin/admin/eventCalendar">
+                    <span>Event Calendar</span>
+
+                    {totalUpcomingEvent > 0 && (
+                      <span className="inline-flex items-center justify-center min-w-6 h-6 px-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold shadow">
+                        {totalUpcomingEvent}
+                      </span>
+                    )}
+                  </Link>
+
+                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
+                    href="/afterLogin/admin/collections">
+                    Collections
+                  </Link>
+
+                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
+                    href="/afterLogin/admin/manageUsers">
+                    Manage Users
+                  </Link>
+
+                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
+                    href="/afterLogin/admin/collectiontypes">
+                    Collection Types
                   </Link>
 
                    <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
