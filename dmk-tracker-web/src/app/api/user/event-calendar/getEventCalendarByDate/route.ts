@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/requireAuth";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
+    const body = await req.json();
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 120000); // 120 seconds
@@ -10,10 +11,11 @@ export async function GET(req: Request) {
     const token = await requireAuth();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/user/event-calendar/count`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/event-calendar/get-by-date`,
       {
-        method: "GET",
+        method: "POST",
         headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
+        body: JSON.stringify(body),
         credentials: "include",
         signal: controller.signal,
       }
@@ -25,7 +27,9 @@ export async function GET(req: Request) {
 
     if (!res.ok) {
       return NextResponse.json(
-        { message: data.error },
+        {
+          message: data.error,
+        },
         { status: res.status }
       );
     }
@@ -35,9 +39,9 @@ export async function GET(req: Request) {
         message: data.message,
         events: data.data,
       },
-      { status: 200 }
+      { status: res.status }
     );
-
+    
   } catch (err: unknown) {
 
     if (err instanceof Error && err.name === "AbortError") {
@@ -50,6 +54,10 @@ export async function GET(req: Request) {
     const message =
       err instanceof Error ? err.message : "Internal server error";
 
-    return NextResponse.json({ message }, { status: 500 });
+    return NextResponse.json(
+      { message },
+      { status: 500 }
+    );
   }
 }
+

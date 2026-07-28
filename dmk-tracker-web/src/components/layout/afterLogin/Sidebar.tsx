@@ -39,7 +39,7 @@ export function Sidebar({ user }: { user: User }) {
       return;
     }
 
-    setTotalUpcomingEvent(data.event);
+    setTotalUpcomingEvent(data.events);
 
   };
 
@@ -95,6 +95,17 @@ export function Sidebar({ user }: { user: User }) {
                 <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
                   href="/afterLogin/user/attractions">
                   Attractions
+                </Link>
+
+                <Link className="flex items-center gap-2 px-3 py-2 rounded hover:bg-indigo-100"
+                  href="/afterLogin/user/eventCalendar">
+                  <span>Event Calendar</span>
+
+                  {totalUpcomingEvent > 0 && (
+                    <span className="inline-flex items-center justify-center min-w-6 h-6 px-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold shadow">
+                      {totalUpcomingEvent}
+                    </span>
+                  )}
                 </Link>
 
                 <Link className="block px-3 py-2 rounded hover:bg-indigo-100"

@@ -3,6 +3,8 @@ import { requireAuth } from "@/lib/requireAuth";
 
 export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const queryString = searchParams.toString();
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 120000); // 120 seconds
@@ -10,7 +12,7 @@ export async function GET(req: Request) {
     const token = await requireAuth();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/user/event-calendar/count`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/event-calendar/list?${queryString}`,
       {
         method: "GET",
         headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
@@ -34,6 +36,7 @@ export async function GET(req: Request) {
       {
         message: data.message,
         events: data.data,
+        meta: data.meta,
       },
       { status: 200 }
     );
