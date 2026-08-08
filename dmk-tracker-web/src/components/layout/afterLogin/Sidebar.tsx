@@ -190,6 +190,11 @@ export function Sidebar({ user }: { user: User }) {
                     href="/afterLogin/admin/activitylog">
                     Activity Log
                   </Link>
+
+                  <Link className="block px-3 py-2 rounded hover:bg-indigo-100"
+                    href="/afterLogin/admin/eventEmailLog">
+                    Event Email Log
+                  </Link>
                 </div>
               )}
             </div>
